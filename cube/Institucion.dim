@@ -1,0 +1,347 @@
+﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="befa00b5-1eb0-4a97-9e60-53e0f031be9e" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>Institucion</ID>
+  <Name>Institucion</Name>
+  <CreatedTimestamp>0001-01-01T00:00:00Z</CreatedTimestamp>
+  <LastSchemaUpdate>0001-01-01T00:00:00Z</LastSchemaUpdate>
+  <Annotations>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
+      <Value>
+        <dds xmlns="">
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="2" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-364" scrolltop="-8255" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="4736" y="21511" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="0" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+            <font>
+              <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
+            </font>
+            <mouseicon>
+              <ddsxmlobjectstreamwrapper binary="6c74000000000000" />
+            </mouseicon>
+          </diagram>
+          <layoutmanager>
+            <ddsxmlobj />
+          </layoutmanager>
+          <ddscontrol controlprogid="DdsShapes.DdsObjectManagedBridge" tooltip="dim_institucion" left="20" top="0" logicalid="1" controlid="1" masterid="0" hint1="0" hint2="0" width="3969" height="5000" noresize="0" nomove="0" nodefaultattachpoints="0" autodrag="1" usedefaultiddshape="1" selectable="1" showselectionhandles="1" allownudging="1" isannotation="0" dontautolayout="0" groupcollapsed="0" tabstop="1" visible="1" snaptogrid="0">
+            <control>
+              <ddsxmlobjectstreaminitwrapper binary="000e0000810f000088130000" />
+            </control>
+            <layoutobject>
+              <ddsxmlobj>
+                <property name="LogicalObject" value="dw_dim_institucion" vartype="8" />
+              </ddsxmlobj>
+            </layoutobject>
+            <shape groupshapeid="0" groupnode="0" />
+          </ddscontrol>
+        </dds>
+      </Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowFriendlyNames</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowRelationshipNames</Name>
+      <Value>false</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:UseDiagramDefaultLayout</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortLeft</Name>
+      <Value>-364</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortTop</Name>
+      <Value>-8255</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingLeft</Name>
+      <Value>20</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingTop</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramZoom</Name>
+      <Value>100</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ARDiagramLayout</Name>
+      <Value>
+        <DiagramLayout ZoomPercent="100" ViewPortX="0" ViewPortY="0" xmlns="">
+          <Shapes NodeWidth="145">
+            <Shape Id="Sk Institucion" Expanded="false">
+              <Attributes>
+                <Attribute Id="Sk Institucion" />
+                <Attribute Id="Acreditacion" />
+                <Attribute Id="Estado" />
+                <Attribute Id="Principal Seccional" />
+              </Attributes>
+              <Position x="20" y="20" />
+            </Shape>
+            <Shape Id="Caracter Academico" Expanded="false">
+              <Attributes>
+                <Attribute Id="Caracter Academico" />
+              </Attributes>
+              <Position x="206" y="20" />
+            </Shape>
+            <Shape Id="Naturaleza Juridica" Expanded="false">
+              <Attributes>
+                <Attribute Id="Naturaleza Juridica" />
+              </Attributes>
+              <Position x="206" y="68" />
+            </Shape>
+            <Shape Id="Sector" Expanded="false">
+              <Attributes>
+                <Attribute Id="Sector" />
+              </Attributes>
+              <Position x="206" y="116" />
+            </Shape>
+          </Shapes>
+        </DiagramLayout>
+      </Value>
+    </Annotation>
+  </Annotations>
+  <LastProcessed>0001-01-01T00:00:00Z</LastProcessed>
+  <State>Unprocessed</State>
+  <Source xsi:type="DataSourceViewBinding" dwd:design-time-name="9ba9a4b6-44f7-4d24-aadd-3d364bc661b8">
+    <DataSourceViewID>DSV_SNIES</DataSourceViewID>
+  </Source>
+  <ErrorConfiguration dwd:design-time-name="8525c10f-8cb5-4e01-81a9-3ababf4e09e4">
+    <KeyNotFound>ReportAndStop</KeyNotFound>
+    <KeyDuplicate>ReportAndStop</KeyDuplicate>
+    <NullKeyNotAllowed>ReportAndStop</NullKeyNotAllowed>
+  </ErrorConfiguration>
+  <CurrentStorageMode>Molap</CurrentStorageMode>
+  <Attributes>
+    <Attribute dwd:design-time-name="ee66486b-3ac7-490a-9f7d-c65b1953ac1d">
+      <ID>Sk Institucion</ID>
+      <Name>Institucion</Name>
+      <Usage>Key</Usage>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="ffcf8e77-3fb2-4276-8432-78ec364929dd">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="9e583046-6d5a-439b-b413-f2c5b795c9ce">
+            <TableID>dw_dim_institucion</TableID>
+            <ColumnID>sk_institucion</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="8fb6ece5-c9c7-4905-8ca1-9e269747455b">
+        <DataType>WChar</DataType>
+        <DataSize>400</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="36f07eb3-5dcd-4fca-9578-55bd49b76bba">
+          <TableID>dw_dim_institucion</TableID>
+          <ColumnID>nombre</ColumnID>
+        </Source>
+      </NameColumn>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="1781f354-1a82-4c23-beb2-3206ac2dc633">
+          <AttributeID>Estado</AttributeID>
+          <Name>Estado</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="4521fe18-ada2-4b0a-9e88-d40b0521af02">
+          <AttributeID>Principal Seccional</AttributeID>
+          <Name>Principal Seccional</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="d1fbe40a-b990-4b65-bf13-5563feb91469">
+          <AttributeID>Acreditacion</AttributeID>
+          <Name>Acreditacion</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="379987cf-11be-4801-babc-4730e7a8d8b1">
+          <AttributeID>Sector</AttributeID>
+          <Name>Sector</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="c4b6740c-2624-4725-9d86-99010123f297">
+          <AttributeID>Naturaleza Juridica</AttributeID>
+          <Name>Naturaleza Juridica</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="4dee49a8-17e8-4030-90e2-334e2239498f">
+          <AttributeID>Caracter Academico</AttributeID>
+          <Name>Caracter Academico</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="d282e01f-a120-4f90-af91-15f46b217db8">
+      <ID>Estado</ID>
+      <Name>Estado</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="048d1eb3-27bb-44a4-a595-ddcc3b9b15b7">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="18eb8c53-cc99-4987-97b2-04eaad49a2e6">
+            <TableID>dw_dim_institucion</TableID>
+            <ColumnID>estado</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="d75e6285-f6de-49ad-b894-9414807932c0">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="a9b31a8d-5a3e-4fa8-96fb-6b89b6b5188f">
+          <TableID>dw_dim_institucion</TableID>
+          <ColumnID>estado</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="141e001d-2604-4e75-9975-dd2f196596ec">
+      <ID>Principal Seccional</ID>
+      <Name>Principal Seccional</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="0a656bee-dc49-40fc-b484-6d66e2532fa9">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="2c090171-65b3-46dc-b3d0-77f98259ca7e">
+            <TableID>dw_dim_institucion</TableID>
+            <ColumnID>principal_seccional</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="da422f5e-a1bf-4bda-a1af-ae87d084df15">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="f09c6f19-1136-490a-a3b5-44bf09babef9">
+          <TableID>dw_dim_institucion</TableID>
+          <ColumnID>principal_seccional</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="fea27bb5-5ea1-4cbf-a531-3c26e20b6767">
+      <ID>Naturaleza Juridica</ID>
+      <Name>Naturaleza Juridica</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="2b6b39b1-b55d-4dc5-9e4d-ea2c23b211ef">
+          <DataType>WChar</DataType>
+          <DataSize>200</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="7164b818-1093-41f3-8e30-aafaf963a96c">
+            <TableID>dw_dim_institucion</TableID>
+            <ColumnID>naturaleza_juridica</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="ae60c1e8-3b6c-4572-bdc4-0fea182367e5">
+        <DataType>WChar</DataType>
+        <DataSize>200</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="e8200ab8-5c35-40d0-a1dc-08c3cd47653a">
+          <TableID>dw_dim_institucion</TableID>
+          <ColumnID>naturaleza_juridica</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="30005afc-d7f9-42ec-90a7-0237dd8a1288">
+      <ID>Sector</ID>
+      <Name>Sector</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="7b5547f7-ed0c-41d9-8214-ece0461028bd">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="f4da41c9-3ad3-45f9-9df2-2ac1076fc0bd">
+            <TableID>dw_dim_institucion</TableID>
+            <ColumnID>sector</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="7e8d9ef9-0b18-46b2-b0f2-5dc6d43718a4">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="8c9edd22-c23f-4d67-b4aa-b733eee0a4c6">
+          <TableID>dw_dim_institucion</TableID>
+          <ColumnID>sector</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="e8759a64-3c15-49f4-b020-7afbd7351414">
+      <ID>Caracter Academico</ID>
+      <Name>Caracter Academico</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="d5b08480-43c0-4a9c-bd18-c619eb1765e5">
+          <DataType>WChar</DataType>
+          <DataSize>200</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="21bd538e-64fa-4b67-ae85-340ea74d6e06">
+            <TableID>dw_dim_institucion</TableID>
+            <ColumnID>caracter_academico</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="a35a613f-4bcc-475c-ac74-1f13b3832cc4">
+        <DataType>WChar</DataType>
+        <DataSize>200</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="50b9ff57-0efb-4e97-97a3-01621018c67b">
+          <TableID>dw_dim_institucion</TableID>
+          <ColumnID>caracter_academico</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="c01d820d-ebae-4086-872e-d5c70aaca422">
+      <ID>Acreditacion</ID>
+      <Name>Acreditacion</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="4a6caaf0-5a95-4598-bd83-79bb9d5fb28d">
+          <DataType>WChar</DataType>
+          <DataSize>50</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="afa391b9-561c-452a-b096-0089c04c1894">
+            <TableID>dw_dim_institucion</TableID>
+            <ColumnID>acreditacion</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="95ee5f0d-9d8e-49df-9657-5271a1652414">
+        <DataType>WChar</DataType>
+        <DataSize>50</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="6a6a35a4-c540-44b4-8b0b-4cdaa084b2fc">
+          <TableID>dw_dim_institucion</TableID>
+          <ColumnID>acreditacion</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+  </Attributes>
+  <Hierarchies>
+    <Hierarchy dwd:design-time-name="e25ff8b6-aeca-4c5d-898e-ebe14f201ea8">
+      <ID>Hierarchy</ID>
+      <Name>Sector-Naturaleza-Caracter-Institucion</Name>
+      <Levels>
+        <Level dwd:design-time-name="c5ea79f1-d461-4e3b-b326-bdec565fb887">
+          <ID>Sector</ID>
+          <Name>Sector</Name>
+          <SourceAttributeID>Sector</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="63ac6a97-b41a-4736-ad73-759060854c11">
+          <ID>Naturaleza Juridica</ID>
+          <Name>Naturaleza Juridica</Name>
+          <SourceAttributeID>Naturaleza Juridica</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="fb8d8393-7e81-47fe-ba96-2eda345c30d6">
+          <ID>Caracter Academico</ID>
+          <Name>Caracter Academico</Name>
+          <SourceAttributeID>Caracter Academico</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="f85d0878-f90f-48b0-b9c3-36b867ae43d9">
+          <ID>Institucion</ID>
+          <Name>Institucion</Name>
+          <SourceAttributeID>Sk Institucion</SourceAttributeID>
+        </Level>
+      </Levels>
+    </Hierarchy>
+  </Hierarchies>
+  <ddl300:ProcessingState>Unprocessed</ddl300:ProcessingState>
+</Dimension>

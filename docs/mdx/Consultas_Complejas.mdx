@@ -1,0 +1,106 @@
+-- ============================================================
+-- CONSULTAS COMPLEJAS
+-- ============================================================
+
+-- C1. Programas de alta calidad por departamento
+--     Muestra el total de programas, cuántos tienen acreditación de alta
+--     calidad y qué porcentaje representan. Ordenado por programas de alta calidad.
+--     Funciones: miembros calculados, tupla con miembro de otra dimensión,
+--     CoalesceEmpty, ORDER.
+--     Dimensiones: Ubicacion y Estado Calidad.
+WITH
+  MEMBER [Measures].[Programas Alta Calidad] AS
+    CoalesceEmpty(
+      ( [Measures].[Numero de Programas],
+        [Estado Calidad].[Reconocimiento Ministerio].&[ACREDITACIÓN DE ALTA CALIDAD] ),
+      0
+    )
+  MEMBER [Measures].[Pct Alta Calidad] AS
+    IIF( [Measures].[Numero de Programas] = 0,
+         NULL,
+         [Measures].[Programas Alta Calidad] / [Measures].[Numero de Programas] ),
+    FORMAT_STRING = "0.00%"
+SELECT
+  { [Measures].[Numero de Programas],
+    [Measures].[Programas Alta Calidad],
+    [Measures].[Pct Alta Calidad] } ON COLUMNS,
+  NON EMPTY ORDER(
+    [Ubicacion].[Departamento].[Departamento].MEMBERS,
+    [Measures].[Programas Alta Calidad],
+    BDESC
+  ) ON ROWS
+FROM [Cubo_SNIES];
+
+
+-- C2. Calidad contra el entorno: instituciones con oferta en Nariño cuyo
+--     porcentaje de programas de alta calidad supera el promedio nacional
+--     de su mismo sector.
+--     Funciones: FILTER, ORDER, miembros calculados que comparan contra una
+--     tupla de otro contexto (todo el país, todas las instituciones).
+--     Dimensiones: Institucion, Ubicacion y Estado Calidad.
+WITH
+  MEMBER [Measures].[Pct Alta Calidad] AS
+    IIF( [Measures].[Numero de Programas] = 0,
+         NULL,
+         CoalesceEmpty(
+           ( [Measures].[Numero de Programas],
+             [Estado Calidad].[Reconocimiento Ministerio].&[ACREDITACIÓN DE ALTA CALIDAD] ),
+           0
+         ) / [Measures].[Numero de Programas] ),
+    FORMAT_STRING = "0.00%"
+  MEMBER [Measures].[Pct Sector Nacional] AS
+    ( [Measures].[Pct Alta Calidad],
+      [Institucion].[Institucion].DEFAULTMEMBER,
+      [Ubicacion].[Departamento].DEFAULTMEMBER ),
+    FORMAT_STRING = "0.00%"
+  MEMBER [Measures].[Dif vs Sector] AS
+    [Measures].[Pct Alta Calidad] - [Measures].[Pct Sector Nacional],
+    FORMAT_STRING = "0.00%"
+SELECT
+  { [Measures].[Numero de Programas],
+    [Measures].[Pct Alta Calidad],
+    [Measures].[Pct Sector Nacional],
+    [Measures].[Dif vs Sector] } ON COLUMNS,
+  ORDER(
+    FILTER(
+      [Institucion].[Sector].[Sector].MEMBERS
+        * [Institucion].[Institucion].[Institucion].MEMBERS,
+      [Measures].[Pct Alta Calidad] > [Measures].[Pct Sector Nacional]
+    ),
+    [Measures].[Dif vs Sector],
+    BDESC
+  ) ON ROWS
+FROM [Cubo_SNIES]
+WHERE ( [Ubicacion].[Departamento].[NARIÑO] );
+
+
+-- C3. Tendencia de la oferta: programas registrados por año, promedio móvil
+--     de 3 años y crecimiento porcentual frente al año anterior (2013 a 2026).
+--     Se excluye el año 2029: son 2 programas con fecha de registro futura,
+--     un error de calidad de datos que distorsiona el promedio móvil.
+--     Funciones: LAG, PREVMEMBER, rango con ":", AVG, miembros calculados.
+--     Dimensión: Tiempo (rol registro SNIES).
+WITH
+  MEMBER [Measures].[Prom Movil 3 Anios] AS
+    IIF( [Sk Tiempo Registro Snies].[Año].CURRENTMEMBER.LAG(2) IS NULL,
+         NULL,
+         AVG( [Sk Tiempo Registro Snies].[Año].CURRENTMEMBER.LAG(2)
+                : [Sk Tiempo Registro Snies].[Año].CURRENTMEMBER,
+              [Measures].[Numero de Programas] ) ),
+    FORMAT_STRING = "#,##0.0"
+  MEMBER [Measures].[Crecimiento Pct] AS
+    IIF( CoalesceEmpty( ( [Measures].[Numero de Programas],
+                          [Sk Tiempo Registro Snies].[Año].CURRENTMEMBER.PREVMEMBER ), 0 ) = 0,
+         NULL,
+         ( [Measures].[Numero de Programas]
+             - ( [Measures].[Numero de Programas],
+                 [Sk Tiempo Registro Snies].[Año].CURRENTMEMBER.PREVMEMBER ) )
+           / ( [Measures].[Numero de Programas],
+               [Sk Tiempo Registro Snies].[Año].CURRENTMEMBER.PREVMEMBER ) ),
+    FORMAT_STRING = "0.0%"
+SELECT
+  { [Measures].[Numero de Programas],
+    [Measures].[Prom Movil 3 Anios],
+    [Measures].[Crecimiento Pct] } ON COLUMNS,
+  [Sk Tiempo Registro Snies].[Año].&[2013] : [Sk Tiempo Registro Snies].[Año].&[2026] ON ROWS
+FROM [Cubo_SNIES];

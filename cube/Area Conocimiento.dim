@@ -1,0 +1,418 @@
+﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="d774f99a-6247-49f5-80e9-fd9dc7570fd5" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>Area Conocimiento</ID>
+  <Name>Area Conocimiento</Name>
+  <CreatedTimestamp>0001-01-01T00:00:00Z</CreatedTimestamp>
+  <LastSchemaUpdate>0001-01-01T00:00:00Z</LastSchemaUpdate>
+  <Annotations>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
+      <Value>
+        <dds xmlns="">
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="2" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-324" scrolltop="-8334" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="4736" y="21511" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="0" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+            <font>
+              <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
+            </font>
+            <mouseicon>
+              <ddsxmlobjectstreamwrapper binary="6c74000000000000" />
+            </mouseicon>
+          </diagram>
+          <layoutmanager>
+            <ddsxmlobj />
+          </layoutmanager>
+          <ddscontrol controlprogid="DdsShapes.DdsObjectManagedBridge" tooltip="v_dim_area_conocimiento" left="20" top="0" logicalid="1" controlid="1" masterid="0" hint1="0" hint2="0" width="4048" height="4842" noresize="0" nomove="0" nodefaultattachpoints="0" autodrag="1" usedefaultiddshape="1" selectable="1" showselectionhandles="1" allownudging="1" isannotation="0" dontautolayout="0" groupcollapsed="0" tabstop="1" visible="1" snaptogrid="0">
+            <control>
+              <ddsxmlobjectstreaminitwrapper binary="000e0000d00f0000ea120000" />
+            </control>
+            <layoutobject>
+              <ddsxmlobj>
+                <property name="LogicalObject" value="dw_v_dim_area_conocimiento" vartype="8" />
+              </ddsxmlobj>
+            </layoutobject>
+            <shape groupshapeid="0" groupnode="0" />
+          </ddscontrol>
+        </dds>
+      </Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowFriendlyNames</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowRelationshipNames</Name>
+      <Value>false</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:UseDiagramDefaultLayout</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortLeft</Name>
+      <Value>-324</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortTop</Name>
+      <Value>-8334</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingLeft</Name>
+      <Value>20</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingTop</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramZoom</Name>
+      <Value>100</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ARDiagramLayout</Name>
+      <Value>
+        <DiagramLayout ZoomPercent="100" ViewPortX="71" ViewPortY="-62" xmlns="">
+          <Shapes NodeWidth="179">
+            <Shape Id="Sk Area Conocimiento" Expanded="true">
+              <Attributes>
+                <Attribute Id="Sk Area Conocimiento" />
+                <Attribute Id="Clave Cine Detallado" />
+                <Attribute Id="Clave Cine Especifico" />
+                <Attribute Id="Clave Nbc" />
+              </Attributes>
+              <Position x="20" y="20" />
+            </Shape>
+            <Shape Id="Cine f Detallado" Expanded="false">
+              <Attributes>
+                <Attribute Id="Cine f Detallado" />
+              </Attributes>
+              <Position x="248" y="20" />
+            </Shape>
+            <Shape Id="Cine f Especifico" Expanded="false">
+              <Attributes>
+                <Attribute Id="Cine f Especifico" />
+              </Attributes>
+              <Position x="477" y="20" />
+            </Shape>
+            <Shape Id="Cine f Amplio" Expanded="false">
+              <Attributes>
+                <Attribute Id="Cine f Amplio" />
+              </Attributes>
+              <Position x="706" y="20" />
+            </Shape>
+            <Shape Id="Nbc" Expanded="false">
+              <Attributes>
+                <Attribute Id="Nbc" />
+              </Attributes>
+              <Position x="248" y="68" />
+            </Shape>
+            <Shape Id="Area Conocimiento" Expanded="false">
+              <Attributes>
+                <Attribute Id="Area Conocimiento" />
+              </Attributes>
+              <Position x="477" y="68" />
+            </Shape>
+          </Shapes>
+        </DiagramLayout>
+      </Value>
+    </Annotation>
+  </Annotations>
+  <LastProcessed>0001-01-01T00:00:00Z</LastProcessed>
+  <State>Unprocessed</State>
+  <Source xsi:type="DataSourceViewBinding" dwd:design-time-name="1f833995-1b33-46d1-9536-0a5bdbfd7cbf">
+    <DataSourceViewID>DSV_SNIES</DataSourceViewID>
+  </Source>
+  <ErrorConfiguration dwd:design-time-name="8840e2ce-524a-44ce-8d43-d14ef7fc8267">
+    <KeyNotFound>ReportAndStop</KeyNotFound>
+    <KeyDuplicate>ReportAndStop</KeyDuplicate>
+    <NullKeyNotAllowed>ReportAndStop</NullKeyNotAllowed>
+  </ErrorConfiguration>
+  <CurrentStorageMode>Molap</CurrentStorageMode>
+  <Attributes>
+    <Attribute dwd:design-time-name="402a2acf-efb3-4dd0-93ba-c7a56a2282ca">
+      <ID>Sk Area Conocimiento</ID>
+      <Name>Sk Area Conocimiento</Name>
+      <Usage>Key</Usage>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="c7f32ae9-ce60-4664-9b1a-06cab7758a13">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="6365c9a2-b6cf-4f35-bdf0-76a96971196f">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>sk_area_conocimiento</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="5aeb886b-a445-4bc0-95e1-e0bd413aa60e">
+        <DataType>WChar</DataType>
+        <DataSize>200</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="32918e15-e6f2-4981-be07-8189828ae40f">
+          <TableID>dw_v_dim_area_conocimiento</TableID>
+          <ColumnID>sk_area_conocimiento</ColumnID>
+        </Source>
+      </NameColumn>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="b9a0ce5b-3c2a-4efb-b242-1b61ae25b49a">
+          <AttributeID>Clave Nbc</AttributeID>
+          <Name>Clave Nbc</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="6b2ae189-7146-497e-8735-52089aee96fc">
+          <AttributeID>Clave Cine Detallado</AttributeID>
+          <Name>Clave Cine Detallado</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="be612662-1799-4780-a154-8a17c90452a9">
+          <AttributeID>Clave Cine Especifico</AttributeID>
+          <Name>Clave Cine Especifico</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="85c4faa3-8eae-4291-99d9-0c4d52d818f5">
+          <AttributeID>Nbc</AttributeID>
+          <Name>Nbc</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="24356fac-6dae-4d5b-8849-e8b594be3fa3">
+          <AttributeID>Cine f Detallado</AttributeID>
+          <Name>Cine f Detallado</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="a10a9e77-2c2c-43e7-a3b7-dc3b9cd5b545">
+      <ID>Area Conocimiento</ID>
+      <Name>Area Conocimiento</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="68915a7e-e06f-4722-a4d1-4ebcb9b70474">
+          <DataType>WChar</DataType>
+          <DataSize>200</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="fbb802a0-64a7-4c59-9c0f-4a58bc564b91">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>area_conocimiento</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="181177e6-5515-49d9-8da6-7b37b00f26b0">
+        <DataType>WChar</DataType>
+        <DataSize>200</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="e0b41ca4-bf84-4c6a-bdc0-3e622b191974">
+          <TableID>dw_v_dim_area_conocimiento</TableID>
+          <ColumnID>area_conocimiento</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="b853daf6-e709-4c50-8ee9-e9cfa6da1562">
+      <ID>Nbc</ID>
+      <Name>Nbc</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="5a8e9bd1-b123-4852-a6a8-70627b7ae1c8">
+          <DataType>WChar</DataType>
+          <DataSize>401</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="5614e6d2-76cf-4c90-bde7-d9a077c23c19">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>clave_nbc</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="02ad274a-d468-4652-bc39-7ce54b51c266">
+        <DataType>WChar</DataType>
+        <DataSize>200</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="8bfb14c8-a429-4230-b882-4dc1b6de5d77">
+          <TableID>dw_v_dim_area_conocimiento</TableID>
+          <ColumnID>nbc</ColumnID>
+        </Source>
+      </NameColumn>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="e87d274d-14c9-420f-a537-976aee0cd5e5">
+          <AttributeID>Area Conocimiento</AttributeID>
+          <Name>Area Conocimiento</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="bfbed0b9-718e-4109-aa3f-f69f3d23f65e">
+      <ID>Cine f Amplio</ID>
+      <Name>Cine f Amplio</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="6f71433a-8bde-4910-8c6c-2926f53eb519">
+          <DataType>WChar</DataType>
+          <DataSize>200</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="972b0f82-67ae-42e0-a7b7-5d69d7bb072c">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>cine_f_amplio</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="38df4e4a-75e6-4802-9880-9aa53d0bd1ba">
+        <DataType>WChar</DataType>
+        <DataSize>200</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="430a20fa-1a6e-43ae-9ac4-561b0c0e8265">
+          <TableID>dw_v_dim_area_conocimiento</TableID>
+          <ColumnID>cine_f_amplio</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="5372ee50-70d3-4227-9b6f-6e9b8e8da27f">
+      <ID>Cine f Especifico</ID>
+      <Name>Cine f Especifico</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="0d21cd7d-a234-47c0-a789-02312cb67175">
+          <DataType>WChar</DataType>
+          <DataSize>401</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="1cbf8b4f-c814-4db3-8e2c-46a9f3a35b9c">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>clave_cine_especifico</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="1243118e-7340-427d-b659-7344884755ce">
+        <DataType>WChar</DataType>
+        <DataSize>200</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="686f7e69-670d-4071-affb-828776f3c031">
+          <TableID>dw_v_dim_area_conocimiento</TableID>
+          <ColumnID>cine_f_especifico</ColumnID>
+        </Source>
+      </NameColumn>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="8cf1bd69-e7e5-4886-aff4-43384621e715">
+          <AttributeID>Cine f Amplio</AttributeID>
+          <Name>Cine f Amplio</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="b10fcdca-b6f5-42bd-879e-03d93dfb9d4d">
+      <ID>Cine f Detallado</ID>
+      <Name>Cine f Detallado</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="573564e6-1eeb-4f87-9ce6-526e74525bc0">
+          <DataType>WChar</DataType>
+          <DataSize>602</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="c0b2bee7-f311-4d78-ac31-c42d91d34025">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>clave_cine_detallado</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="7e0be9ab-3bdc-4499-8579-80a5264baa78">
+        <DataType>WChar</DataType>
+        <DataSize>602</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="2d543e5f-544f-4189-a645-5e79f4e567c1">
+          <TableID>dw_v_dim_area_conocimiento</TableID>
+          <ColumnID>clave_cine_detallado</ColumnID>
+        </Source>
+      </NameColumn>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="c6c5b492-8780-4c05-a995-68688263cc52">
+          <AttributeID>Cine f Especifico</AttributeID>
+          <Name>Cine f Especifico</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="9ca39971-100d-4921-b0ee-210c771e17ae">
+      <ID>Clave Nbc</ID>
+      <Name>Clave Nbc</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="26d9f45b-c0da-4ad1-9d65-71aed5bbfaf0">
+          <DataType>WChar</DataType>
+          <DataSize>401</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="70fb0959-c9d9-4115-a034-5fe72d1f2c7f">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>clave_nbc</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <OrderBy>Key</OrderBy>
+      <AttributeHierarchyEnabled>false</AttributeHierarchyEnabled>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="e4e45c5b-cad6-4248-acf3-bba217146bfe">
+      <ID>Clave Cine Especifico</ID>
+      <Name>Clave Cine Especifico</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="e9ad22dc-eae1-451c-8217-5d3f3abfb9cc">
+          <DataType>WChar</DataType>
+          <DataSize>401</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="d9730806-a253-48c4-95de-05cde4268b27">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>clave_cine_especifico</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <OrderBy>Key</OrderBy>
+      <AttributeHierarchyEnabled>false</AttributeHierarchyEnabled>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="c3feffec-21a0-4089-ba97-a0399b7984df">
+      <ID>Clave Cine Detallado</ID>
+      <Name>Clave Cine Detallado</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="4d8bb844-147c-4fb7-a4d5-705a991f7d8b">
+          <DataType>WChar</DataType>
+          <DataSize>602</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="3183c550-1e0a-4d2d-8486-08959260c2b1">
+            <TableID>dw_v_dim_area_conocimiento</TableID>
+            <ColumnID>clave_cine_detallado</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <OrderBy>Key</OrderBy>
+      <AttributeHierarchyEnabled>false</AttributeHierarchyEnabled>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+  </Attributes>
+  <Hierarchies>
+    <Hierarchy dwd:design-time-name="f7b00b2a-d8ff-4380-81a5-a747c3344ad6">
+      <ID>Hierarchy</ID>
+      <Name>Hierarchy</Name>
+      <Levels>
+        <Level dwd:design-time-name="b007c5fe-3e45-402c-99c0-a67fb977ac68">
+          <ID>Area Conocimiento</ID>
+          <Name>Area Conocimiento</Name>
+          <SourceAttributeID>Area Conocimiento</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="715f3811-81da-448d-8332-9a4ae8c8568b">
+          <ID>Nbc</ID>
+          <Name>Nbc</Name>
+          <SourceAttributeID>Nbc</SourceAttributeID>
+        </Level>
+      </Levels>
+    </Hierarchy>
+    <Hierarchy dwd:design-time-name="5c8703d8-c55e-47ff-a8ba-fc6a69e40e36">
+      <ID>Hierarchy 1</ID>
+      <Name>Hierarchy 1</Name>
+      <Levels>
+        <Level dwd:design-time-name="db2c6a4e-0be6-49e4-8016-57e00e4b2c98">
+          <ID>Cine f Amplio</ID>
+          <Name>Cine f Amplio</Name>
+          <SourceAttributeID>Cine f Amplio</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="18c1ee9f-2767-4d47-969c-a11d20a972c0">
+          <ID>Cine f Especifico</ID>
+          <Name>Cine f Especifico</Name>
+          <SourceAttributeID>Cine f Especifico</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="42c4970e-0dc7-49c6-9624-2fdf09dbc7c3">
+          <ID>Cine f Detallado</ID>
+          <Name>Cine f Detallado</Name>
+          <SourceAttributeID>Cine f Detallado</SourceAttributeID>
+        </Level>
+      </Levels>
+    </Hierarchy>
+  </Hierarchies>
+  <ddl300:ProcessingState>Unprocessed</ddl300:ProcessingState>
+</Dimension>

@@ -1,0 +1,30 @@
+-- ============================================================
+-- CONSULTAS SIMPLES
+-- ============================================================
+
+-- S1. Programas y costo promedio de matrícula por sector de la institución
+--     Dimensión: Institucion | Operación OLAP: roll-up hasta el nivel Sector
+SELECT
+  { [Measures].[Numero de Programas], [Measures].[Costo Matricula Promedio] } ON COLUMNS,
+  NON EMPTY [Institucion].[Sector].[Sector].MEMBERS ON ROWS
+FROM [Cubo_SNIES];
+
+
+-- S2. Programas registrados en el SNIES por año
+--     Dimensión: Tiempo (rol registro SNIES) | Operación OLAP: roll-up hasta Año
+SELECT
+  { [Measures].[Numero de Programas] } ON COLUMNS,
+  NON EMPTY [Sk Tiempo Registro Snies].[Año].[Año].MEMBERS ON ROWS
+FROM [Cubo_SNIES];
+
+
+-- S3. Programas de pregrado y créditos promedio por campo amplio (CINE)
+--     Dimensiones: Area Conocimiento y Modalidad
+--     Operaciones OLAP: roll-up hasta Campo amplio + slice (nivel = PREGRADO)
+SELECT
+  { [Measures].[Numero de Programas], [Measures].[Creditos Promedio] } ON COLUMNS,
+  NON EMPTY [Area Conocimiento].[Cine f Amplio].[Cine f Amplio].MEMBERS ON ROWS
+FROM [Cubo_SNIES]
+WHERE ( [Modalidad].[Nivel Academico].[PREGRADO] );
+
+

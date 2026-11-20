@@ -1,0 +1,405 @@
+﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="dfbd536a-b0fd-4d8d-bc9b-6331e37a0efe" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>Modalidad</ID>
+  <Name>Modalidad</Name>
+  <CreatedTimestamp>0001-01-01T00:00:00Z</CreatedTimestamp>
+  <LastSchemaUpdate>0001-01-01T00:00:00Z</LastSchemaUpdate>
+  <Annotations>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
+      <Value>
+        <dds xmlns="">
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="2" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-218" scrolltop="-8546" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="4736" y="21511" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="0" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+            <font>
+              <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
+            </font>
+            <mouseicon>
+              <ddsxmlobjectstreamwrapper binary="6c74000000000000" />
+            </mouseicon>
+          </diagram>
+          <layoutmanager>
+            <ddsxmlobj />
+          </layoutmanager>
+          <ddscontrol controlprogid="DdsShapes.DdsObjectManagedBridge" tooltip="v_dim_modalidad" left="20" top="0" logicalid="1" controlid="1" masterid="0" hint1="0" hint2="0" width="4260" height="4419" noresize="0" nomove="0" nodefaultattachpoints="0" autodrag="1" usedefaultiddshape="1" selectable="1" showselectionhandles="1" allownudging="1" isannotation="0" dontautolayout="0" groupcollapsed="0" tabstop="1" visible="1" snaptogrid="0">
+            <control>
+              <ddsxmlobjectstreaminitwrapper binary="000e0000a410000043110000" />
+            </control>
+            <layoutobject>
+              <ddsxmlobj>
+                <property name="LogicalObject" value="dw_v_dim_modalidad" vartype="8" />
+              </ddsxmlobj>
+            </layoutobject>
+            <shape groupshapeid="0" groupnode="0" />
+          </ddscontrol>
+        </dds>
+      </Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowFriendlyNames</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowRelationshipNames</Name>
+      <Value>false</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:UseDiagramDefaultLayout</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortLeft</Name>
+      <Value>-218</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortTop</Name>
+      <Value>-8546</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingLeft</Name>
+      <Value>20</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingTop</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramZoom</Name>
+      <Value>100</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ARDiagramLayout</Name>
+      <Value>
+        <DiagramLayout ZoomPercent="100" ViewPortX="-76" ViewPortY="-62" xmlns="">
+          <Shapes NodeWidth="188">
+            <Shape Id="Sk Modalidad" Expanded="false">
+              <Attributes>
+                <Attribute Id="Sk Modalidad" />
+                <Attribute Id="Clave Nivel Formacion" />
+              </Attributes>
+              <Position x="20" y="20" />
+            </Shape>
+            <Shape Id="Ciclos Propedeuticos" Expanded="false">
+              <Attributes>
+                <Attribute Id="Ciclos Propedeuticos" />
+              </Attributes>
+              <Position x="260" y="20" />
+            </Shape>
+            <Shape Id="Periodicidad Admisiones" Expanded="false">
+              <Attributes>
+                <Attribute Id="Periodicidad Admisiones" />
+              </Attributes>
+              <Position x="260" y="68" />
+            </Shape>
+            <Shape Id="Periodicidad" Expanded="false">
+              <Attributes>
+                <Attribute Id="Periodicidad" />
+              </Attributes>
+              <Position x="260" y="116" />
+            </Shape>
+            <Shape Id="Modalidad" Expanded="false">
+              <Attributes>
+                <Attribute Id="Modalidad" />
+              </Attributes>
+              <Position x="260" y="164" />
+            </Shape>
+            <Shape Id="Nivel Formacion" Expanded="false">
+              <Attributes>
+                <Attribute Id="Nivel Formacion" />
+              </Attributes>
+              <Position x="260" y="212" />
+            </Shape>
+            <Shape Id="Nivel Academico" Expanded="false">
+              <Attributes>
+                <Attribute Id="Nivel Academico" />
+              </Attributes>
+              <Position x="500" y="212" />
+            </Shape>
+          </Shapes>
+        </DiagramLayout>
+      </Value>
+    </Annotation>
+  </Annotations>
+  <LastProcessed>0001-01-01T00:00:00Z</LastProcessed>
+  <State>Unprocessed</State>
+  <Source xsi:type="DataSourceViewBinding" dwd:design-time-name="7c52c7b3-e364-4c7b-af6c-e8bfb0647352">
+    <DataSourceViewID>DSV_SNIES</DataSourceViewID>
+  </Source>
+  <ErrorConfiguration dwd:design-time-name="e74f1037-d570-4b2d-9627-8367942d5e03">
+    <KeyNotFound>ReportAndStop</KeyNotFound>
+    <KeyDuplicate>ReportAndStop</KeyDuplicate>
+    <NullKeyNotAllowed>ReportAndStop</NullKeyNotAllowed>
+  </ErrorConfiguration>
+  <CurrentStorageMode>Molap</CurrentStorageMode>
+  <Attributes>
+    <Attribute dwd:design-time-name="fc0cb146-63d3-4afd-aa24-2b3ab1982f33">
+      <ID>Sk Modalidad</ID>
+      <Name>Combinacion Modalidad</Name>
+      <Usage>Key</Usage>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="6a73aa16-e0fe-441f-95ab-562640fb7f0c">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="699e2c11-76c6-4d0a-b38b-755e556a42ac">
+            <TableID>dw_v_dim_modalidad</TableID>
+            <ColumnID>sk_modalidad</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="e3685da7-6700-4d31-9b35-3f29e14418da">
+        <DataType>WChar</DataType>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="1a48a662-4434-4857-9901-f437613c8c39">
+          <TableID>dw_v_dim_modalidad</TableID>
+          <ColumnID>sk_modalidad</ColumnID>
+        </Source>
+      </NameColumn>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="ce5a6aa5-4e24-4e95-93cf-ddc0b79e3a92">
+          <AttributeID>Nivel Formacion</AttributeID>
+          <Name>Nivel Formacion</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="3a982cdd-cfd0-4d36-854c-807e5acaa832">
+          <AttributeID>Modalidad</AttributeID>
+          <Name>Modalidad</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="681f6ad0-4a76-4582-a686-fa7e3251b1d8">
+          <AttributeID>Periodicidad</AttributeID>
+          <Name>Periodicidad</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="3184fc35-a92e-405b-aff7-bfcc141ba2fd">
+          <AttributeID>Periodicidad Admisiones</AttributeID>
+          <Name>Periodicidad Admisiones</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="5d804eb6-027f-4fce-985a-0dd3ed61f6b8">
+          <AttributeID>Ciclos Propedeuticos</AttributeID>
+          <Name>Ciclos Propedeuticos</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="f871c018-97c2-43ad-9fce-0646c25abd27">
+          <AttributeID>Clave Nivel Formacion</AttributeID>
+          <Name>Clave Nivel Formacion</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="0cdee6f0-4286-4297-a439-0ba4bd1527c0">
+      <ID>Nivel Academico</ID>
+      <Name>Nivel Academico</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="0b3c1839-0e39-409a-bd24-7a6095356f4c">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="8a6ab3ed-e69b-45e5-bf8e-3f497c424d9a">
+            <TableID>dw_v_dim_modalidad</TableID>
+            <ColumnID>nivel_academico</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="bf4c9f72-78a4-47b8-a870-0688e62df4d5">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="fbeb5be9-0a5a-424f-9d68-1b5edd7e323c">
+          <TableID>dw_v_dim_modalidad</TableID>
+          <ColumnID>nivel_academico</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="564c6ecf-b462-4940-9246-9f750bcf40e1">
+      <ID>Nivel Formacion</ID>
+      <Name>Nivel Formacion</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="e698986c-7a0c-4b33-877a-c86380a1bd36">
+          <DataType>WChar</DataType>
+          <DataSize>201</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="ce0e3525-5a69-4703-86d0-1fdaafd3a938">
+            <TableID>dw_v_dim_modalidad</TableID>
+            <ColumnID>clave_nivel_formacion</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="4bc27998-8b9f-4bcc-bd6a-f4654b4c9cf5">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="ab3865d9-f49f-498e-aa0d-0b3496e28776">
+          <TableID>dw_v_dim_modalidad</TableID>
+          <ColumnID>nivel_formacion</ColumnID>
+        </Source>
+      </NameColumn>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="b1c2b152-cc26-4112-9962-a112173b4c0f">
+          <AttributeID>Nivel Academico</AttributeID>
+          <Name>Nivel Academico</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="b7541edc-e2bc-478a-a2ba-ef08b487e714">
+      <ID>Modalidad</ID>
+      <Name>Modalidad</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="c7332372-7737-4c81-bcd5-c7e1abdae40d">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="a6a861cb-128b-469b-8d6a-9f892c5439df">
+            <TableID>dw_v_dim_modalidad</TableID>
+            <ColumnID>modalidad</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="083eec37-8dc7-4c07-afcc-a11176264128">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="a519d183-dba8-4a11-8b40-5c5a62760445">
+          <TableID>dw_v_dim_modalidad</TableID>
+          <ColumnID>modalidad</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="062d297c-b1fe-49e0-8940-1d666b3cb983">
+      <ID>Periodicidad</ID>
+      <Name>Periodicidad</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="510e1647-a43a-41b0-9ebd-62d52356720a">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="b2072560-4cbd-4923-922e-b5dd531c1478">
+            <TableID>dw_v_dim_modalidad</TableID>
+            <ColumnID>periodicidad</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="84b4e90e-ffd0-4b02-aba0-83ff39c44352">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="4e607271-4370-43f3-afd0-74649e00de9f">
+          <TableID>dw_v_dim_modalidad</TableID>
+          <ColumnID>periodicidad</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="883744c1-f642-465e-8d76-b7114c1b7c20">
+      <ID>Periodicidad Admisiones</ID>
+      <Name>Periodicidad Admisiones</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="a73c2c07-58bf-4865-a6d7-f800d9688515">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="a37338ea-c351-4ac0-b788-3bed7a4b62eb">
+            <TableID>dw_v_dim_modalidad</TableID>
+            <ColumnID>periodicidad_admisiones</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="6445e520-e62d-46a3-b918-8da04ac1e6e4">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="cb09c18c-2bd2-47e6-9c5b-e47658bfcd32">
+          <TableID>dw_v_dim_modalidad</TableID>
+          <ColumnID>periodicidad_admisiones</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="e9e553fc-9f28-48e3-8bbf-951c2913c683">
+      <ID>Ciclos Propedeuticos</ID>
+      <Name>Ciclos Propedeuticos</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="01bc1f63-580b-4ed8-9bba-70421aa01c55">
+          <DataType>WChar</DataType>
+          <DataSize>50</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="265ed62e-1d9c-4fa2-9a38-9d18a55b6b0d">
+            <TableID>dw_v_dim_modalidad</TableID>
+            <ColumnID>ciclos_propedeuticos</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="f9ac41c9-7ffc-436e-bf2b-414d2af69ad1">
+        <DataType>WChar</DataType>
+        <DataSize>50</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="03510e48-68f1-4b6a-8e4a-86ea0b93482d">
+          <TableID>dw_v_dim_modalidad</TableID>
+          <ColumnID>ciclos_propedeuticos</ColumnID>
+        </Source>
+      </NameColumn>
+      <OrderBy>Key</OrderBy>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+    <Attribute dwd:design-time-name="d0cddada-1757-49ff-8ed0-a0efec553783">
+      <ID>Clave Nivel Formacion</ID>
+      <Name>Clave Nivel Formacion</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="9367bde6-7c74-4fcc-b172-273ebf3ca750">
+          <DataType>WChar</DataType>
+          <DataSize>201</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="e2039010-560d-4216-9c2a-3f4d50257bd1">
+            <TableID>dw_v_dim_modalidad</TableID>
+            <ColumnID>clave_nivel_formacion</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <OrderBy>Key</OrderBy>
+      <AttributeHierarchyEnabled>false</AttributeHierarchyEnabled>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
+      <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
+      <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
+    </Attribute>
+  </Attributes>
+  <Hierarchies>
+    <Hierarchy dwd:design-time-name="2a4a26fd-98ba-4a32-8ecb-870cf457185c">
+      <ID>Hierarchy</ID>
+      <Name>Hierarchy</Name>
+      <Levels>
+        <Level dwd:design-time-name="74b33685-2f1f-489d-8e14-ef2548620f9a">
+          <ID>Nivel Formacion</ID>
+          <Name>Nivel Formacion</Name>
+          <SourceAttributeID>Nivel Formacion</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="1fcd9e8f-ca5d-482d-865b-44a94f652ff1">
+          <ID>Nivel Academico</ID>
+          <Name>Nivel Academico</Name>
+          <SourceAttributeID>Nivel Academico</SourceAttributeID>
+        </Level>
+      </Levels>
+    </Hierarchy>
+    <Hierarchy dwd:design-time-name="4bdd1b43-9bd7-49df-b3e2-e594fbf7f994">
+      <ID>Hierarchy 1</ID>
+      <Name>Hierarchy 1</Name>
+      <Levels>
+        <Level dwd:design-time-name="162a3f00-b487-4050-9bc2-a9b79bbe39e0">
+          <ID>Modalidad</ID>
+          <Name>Modalidad</Name>
+          <SourceAttributeID>Modalidad</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="811e74e4-63d6-4179-b800-885256eac979">
+          <ID>Periodicidad</ID>
+          <Name>Periodicidad</Name>
+          <SourceAttributeID>Periodicidad</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="78909d27-7a61-4995-97f9-9ad11e3fbd6e">
+          <ID>Periodicidad Admisiones</ID>
+          <Name>Periodicidad Admisiones</Name>
+          <SourceAttributeID>Periodicidad Admisiones</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="5a96ff8a-59a0-4c44-a3da-be0824475a47">
+          <ID>Ciclos Propedeuticos</ID>
+          <Name>Ciclos Propedeuticos</Name>
+          <SourceAttributeID>Ciclos Propedeuticos</SourceAttributeID>
+        </Level>
+      </Levels>
+    </Hierarchy>
+  </Hierarchies>
+  <ddl300:ProcessingState>Unprocessed</ddl300:ProcessingState>
+</Dimension>

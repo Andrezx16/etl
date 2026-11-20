@@ -2,9 +2,12 @@ import asyncio
 import csv
 import io
 import json
+import os
+import secrets
 import shutil
 import sqlite3
 from contextlib import asynccontextmanager, closing
+from urllib.parse import urlsplit
 from uuid import UUID, uuid4
 
 from pathlib import PurePosixPath
@@ -28,22 +31,40 @@ async def lifespan(_):
     init()
     yield
 
-app = FastAPI(title="Mercury", lifespan=lifespan)
+SHARE_ORIGIN = os.getenv("MERCURY_SHARE_ORIGIN", "")
+SHARE_HOST = urlsplit(SHARE_ORIGIN).netloc
+SHARE_KEY = os.getenv("MERCURY_SHARE_KEY", "")
+MAINTENANCE_PATHS = {"/api/setup/initialize", "/api/cube/process"}
+
+app = FastAPI(title="Mercury", lifespan=lifespan,
+              docs_url=None if SHARE_ORIGIN else "/docs",
+              redoc_url=None if SHARE_ORIGIN else "/redoc",
+              openapi_url=None if SHARE_ORIGIN else "/openapi.json")
 
 @app.middleware("http")
 async def local_origin(request, next_handler):
-    if request.url.hostname not in {"127.0.0.1", "localhost", "::1", "testserver"}:
+    if SHARE_ORIGIN:
+        keys = request.headers.getlist("x-mercury-share")
+        if (not SHARE_KEY or request.headers.get("host", "").lower() != SHARE_HOST
+                or len(keys) != 1 or not secrets.compare_digest(keys[0].encode(), SHARE_KEY.encode())):
+            return JSONResponse({"code": "ACCESS", "message": "Abre Mercury desde el enlace autorizado."}, 403)
+        if request.url.path.rstrip("/") in MAINTENANCE_PATHS:
+            return JSONResponse({"code": "LOCAL_ONLY", "message": "Esta acción está disponible desde el equipo servidor."}, 403)
+    elif request.url.hostname not in {"127.0.0.1", "localhost", "::1", "testserver"}:
         return JSONResponse({"code": "HOST", "message": "Dirección no autorizada."}, 403)
     if request.url.path == "/api/uploads/validate":
         length = request.headers.get("content-length", "")
         if not length.isdigit() or int(length) > MAX_BYTES * 2 + 65536:
             return JSONResponse({"code": "UPLOAD_SIZE", "message": "Se requieren dos archivos de máximo 40 MB."}, 413)
     if request.method not in ("GET", "HEAD", "OPTIONS"):
-        from urllib.parse import urlsplit
         origin = request.headers.get("origin")
-        if origin and urlsplit(origin).hostname not in {"127.0.0.1", "localhost", "::1"}:
+        if (origin != SHARE_ORIGIN if SHARE_ORIGIN else
+                origin and urlsplit(origin).hostname not in {"127.0.0.1", "localhost", "::1"}):
             return JSONResponse({"code": "ORIGIN", "message": "Origen no autorizado."}, 403)
-    return await next_handler(request)
+    response = await next_handler(request)
+    if SHARE_ORIGIN and request.url.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "private, no-store"
+    return response
 
 @app.exception_handler(HTTPException)
 async def http_error(_, exc):
@@ -99,7 +120,7 @@ def health():
     return {"postgres": probe(conectar), "sqlServer": probe(connect_sql),
             "ssas": "Disponible" if snapshot else "Sin conexión o sin procesar",
             "versions": layers, "lastRun": run_record(last) if last else None,
-            "setupReady": bootstrap.configured(),
+            "setupReady": not SHARE_ORIGIN and bootstrap.configured(), "shared": bool(SHARE_ORIGIN),
             "publication": dict(published) if published else None,
             "published": bool(layers.get("cube")), "pending": layers.get("dw") != layers.get("cube")}
 

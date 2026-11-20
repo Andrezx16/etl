@@ -31,4 +31,4 @@ export type Option={id:string;label:string}
 export type Metadata={dimensions:Option[];measures:Option[]}
 export type Run={id:string;created:string;started:string|null;ended:string|null;state:string;stage:string;error:string|null;checkpoint:number;files:string[];
  detail:{published_version?:string;etl_id?:string;etl?:{carga?:{hecho?:{nuevos:number;actualizados:number;sin_cambios:number}};validacion?:Record<string,{rechazados:number}>;staging?:Record<string,{rechazados:number}>};events?:{name:string;state:string;at:string}[]}}
-export type Health={publication?:{published:string;programs:number}|null;setupReady?:boolean;postgres:string;sqlServer:string;ssas:string;versions:Record<string,string>;lastRun:Run|null;published:boolean;pending:boolean}
+export type Health={publication?:{published:string;programs:number}|null;setupReady?:boolean;shared?:boolean;postgres:string;sqlServer:string;ssas:string;versions:Record<string,string>;lastRun:Run|null;published:boolean;pending:boolean}

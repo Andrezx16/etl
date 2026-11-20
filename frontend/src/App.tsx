@@ -145,8 +145,8 @@ function Settings({health,refresh,track}:{health?:Health;refresh:()=>Promise<Hea
  }
  return <div className="content-stack"><Services health={health}/><div className="card"><h3>Versiones de datos</h3>
   <dl className="stack">{[['dw','Bodega PostgreSQL'],['sql','Réplica SQL Server'],['cube','Cubo publicado']].map(([key,label])=><div key={key}><dt>{label}</dt><dd>{health?.versions[key]??'Sin versión registrada'}</dd></div>)}</dl>
-  <div className="actions"><button onClick={checkConnections} disabled={checking}>{checking?'Comprobando conexiones…':'Comprobar conexiones'}</button><button disabled={!health?.versions.sql||Boolean(jobActive(health?.lastRun))} onClick={process}>Reprocesar cubo</button></div></div>
-  <div className="card"><h3>Conectar esta instalación</h3><p>La preparación crea los esquemas y despliega el cubo si hace falta. Hazla antes de la primera carga de Excel.</p><div className="actions"><button className="primary" disabled={!health?.setupReady||Boolean(jobActive(health?.lastRun))} onClick={initialize}>Preparar instalación</button></div>{!health?.setupReady&&<small>Ejecuta <code>./scripts/setup.ps1 -Configure -SkipDependencies</code> en PowerShell y reinicia Mercury para habilitar esta acción.</small>}<p>Los dashboards guardados son compartidos por quienes acceden a esta instalación.</p></div>
+  <div className="actions"><button onClick={checkConnections} disabled={checking}>{checking?'Comprobando conexiones…':'Comprobar conexiones'}</button>{!health?.shared&&<button disabled={!health?.versions.sql||Boolean(jobActive(health?.lastRun))} onClick={process}>Reprocesar cubo</button>}</div></div>
+  {!health?.shared&&<div className="card"><h3>Conectar esta instalación</h3><p>La preparación crea los esquemas y despliega el cubo si hace falta. Hazla antes de la primera carga de Excel.</p><div className="actions"><button className="primary" disabled={!health?.setupReady||Boolean(jobActive(health?.lastRun))} onClick={initialize}>Preparar instalación</button></div>{!health?.setupReady&&<small>Ejecuta <code>./scripts/setup.ps1 -Configure -SkipDependencies</code> en PowerShell y reinicia Mercury para habilitar esta acción.</small>}<p>Los dashboards guardados son compartidos por quienes acceden a esta instalación.</p></div>}
  </div>
 }
 export default function App(){
@@ -154,7 +154,7 @@ export default function App(){
  const [tab,setTab]=useState(()=>resolveRoute(initial))
  
  const [run,setRun]=useState(''),[seed,setSeed]=useState(initial==='explorador'?'personalizado':'')
- const health=useQuery({queryKey:['health'],queryFn:()=>api<Health>('/health'),retry:false,refetchInterval:7000})
+ const health=useQuery({queryKey:['health'],queryFn:()=>api<Health>('/health'),retry:false,refetchInterval:q=>q.state.data?.shared?30000:7000})
  const version=health.data?.versions.cube
  const consume=useCallback(()=>setSeed(""),[])
  useEffect(()=>{

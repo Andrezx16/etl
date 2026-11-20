@@ -43,6 +43,18 @@ En cada consola ejecuta `. ./scripts/env.ps1` desde la raíz si deseas cargar el
 | SSAS | `dotnet run --project ssas-service --no-launch-profile` |
 | Frontend | `npm.cmd --prefix frontend run dev` |
 
+## Prueba desde otra red con ngrok
+
+Con el cubo preparado, cierra la terminal anterior de Mercury. Puedes probar la interfaz compilada y la API juntas en tu PC con `./scripts/dev.ps1 -Serve`. Para compartirlas desde fuera, instala [ngrok para Windows](https://ngrok.com/download/windows), crea una cuenta gratuita y agrega su token en tu terminal con `ngrok config add-authtoken`. Si usas una copia portátil de ngrok en `.mercury/tools`, ejecuta `./.mercury/tools/ngrok.exe config add-authtoken` con el token. Usa la dirección de desarrollo que ngrok asigna a tu cuenta.
+
+```powershell
+.\scripts\dev.ps1 -ShareUrl 'https://tu-direccion.ngrok-free.dev' -AllowedEmail 'tu-correo@gmail.com','correo-de-tu-companero@gmail.com'
+```
+
+Los correos indicados deben poder iniciar sesión con Google. Abre la URL desde un celular con datos móviles. Comprueba que un correo autorizado pueda iniciar sesión y un correo ajeno quede rechazado antes de compartir el enlace. Toda la aplicación queda detrás del inicio de sesión. Los usuarios autorizados pueden ver los datos, cargar archivos y editar dashboards compartidos. Para preparar la instalación o reprocesar manualmente el cubo, usa el inicio local.
+
+La URL funciona mientras el PC tenga internet y la terminal de Mercury permanezca abierta. Detén la publicación con Ctrl+C. Puedes volver al modo local con `./scripts/dev.ps1`. La prueba está pensada para hasta tres usuarios por mes y está sujeta a los [límites del plan gratuito](https://ngrok.com/docs/pricing-limits).
+
 ## Recuperación y alojamiento
 
 Antes de migrar, conserva `pg_dump -Fc`, un backup SQL Server, un respaldo SSAS .abf y una copia consistente de `.mercury` con los servicios detenidos. Para recuperar el estado, restaura los cuatro respaldos del mismo punto y verifica el indicador de salud. El registro operativo y los archivos de carga están en `.mercury`. La bitácora del ETL y los respaldos automáticos de PostgreSQL conservan las rutas del módulo original bajo `backend`.

@@ -1,13 +1,18 @@
-param([switch]$Serve, [string]$ShareUrl, [string[]]$AllowedEmail)
+param([switch]$Serve, [string]$ShareUrl, [string[]]$AllowedEmail, [switch]$Public)
 $ErrorActionPreference = 'Stop'
-if ($ShareUrl -or $AllowedEmail) {
+if ($ShareUrl -or $AllowedEmail -or $Public) {
     if ($ShareUrl -notmatch '^https://[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.ngrok-free\.(?:app|dev)/?$') {
         throw 'Usa la URL HTTPS que ngrok asigno a tu cuenta gratuita.'
     }
-    $AllowedEmail = @($AllowedEmail | ForEach-Object { $_.Trim().ToLowerInvariant() } | Select-Object -Unique)
-    if ($AllowedEmail.Count -lt 1 -or $AllowedEmail.Count -gt 3 -or
-        ($AllowedEmail | Where-Object { $_ -notmatch '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$' })) {
-        throw 'Incluye entre uno y tres correos autorizados, usando -AllowedEmail.'
+    if ($Public -and $PSBoundParameters.ContainsKey('AllowedEmail')) {
+        throw 'Elige -Public o -AllowedEmail para compartir Mercury.'
+    }
+    if (-not $Public) {
+        $AllowedEmail = @($AllowedEmail | ForEach-Object { ([string]$_).Trim().ToLowerInvariant() } | Where-Object { $_ } | Select-Object -Unique)
+        if ($AllowedEmail.Count -lt 1 -or $AllowedEmail.Count -gt 3 -or
+            ($AllowedEmail | Where-Object { $_ -notmatch '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$' })) {
+            throw 'Usa -AllowedEmail con uno a tres correos, o usa -Public para compartir sin inicio de sesion.'
+        }
     }
     $ngrok = (Get-Command ngrok.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
     if (-not $ngrok) {
@@ -49,14 +54,17 @@ try {
     if ($ShareUrl) {
         $env:MERCURY_SHARE_ORIGIN = $ShareUrl.TrimEnd('/').ToLowerInvariant()
         $env:MERCURY_SHARE_KEY = [Guid]::NewGuid().ToString('N') + [Guid]::NewGuid().ToString('N')
-        $emailList = ($AllowedEmail | ForEach-Object { "'$_'" }) -join ', '
-        $policy = @{ on_http_request = @(
-            @{ actions = @(@{ type = 'oauth'; config = @{ provider = 'google' } }) },
-            @{ expressions = @("!(actions.ngrok.oauth.identity.email in [$emailList])"); actions = @(@{ type = 'deny'; config = @{ status_code = 403 } }) },
-            @{ actions = @(
-                @{ type = 'remove-headers'; config = @{ headers = @('x-mercury-share') } },
-                @{ type = 'add-headers'; config = @{ headers = @{ 'x-mercury-share' = $env:MERCURY_SHARE_KEY; host = ([uri]$env:MERCURY_SHARE_ORIGIN).Host } } }
-            ) }
+        $policy = @{ on_http_request = @() }
+        if (-not $Public) {
+            $emailList = ($AllowedEmail | ForEach-Object { "'$_'" }) -join ', '
+            $policy.on_http_request += @(
+                @{ actions = @(@{ type = 'oauth'; config = @{ provider = 'google' } }) },
+                @{ expressions = @("!(actions.ngrok.oauth.identity.email in [$emailList])"); actions = @(@{ type = 'deny'; config = @{ status_code = 403 } }) }
+            )
+        }
+        $policy.on_http_request += @{ actions = @(
+            @{ type = 'remove-headers'; config = @{ headers = @('x-mercury-share') } },
+            @{ type = 'add-headers'; config = @{ headers = @{ 'x-mercury-share' = $env:MERCURY_SHARE_KEY; host = ([uri]$env:MERCURY_SHARE_ORIGIN).Host } } }
         ) }
         $policyFile = Join-Path $log ('ngrok-policy-' + [Guid]::NewGuid().ToString('N') + '.json')
         [IO.File]::WriteAllText($policyFile, ($policy | ConvertTo-Json -Depth 12))
@@ -77,6 +85,7 @@ try {
         } until ($ready -or [DateTime]::UtcNow -ge $deadline)
         if (-not $ready) { throw 'La API local no inicio a tiempo. Consulta .mercury/api.err.' }
         Write-Host "Mercury compartido: $env:MERCURY_SHARE_ORIGIN/app"
+        if ($Public) { Write-Host 'Modo publico: el acceso no requiere iniciar sesion.' }
         & $ngrok http "http://127.0.0.1:$api" --url $env:MERCURY_SHARE_ORIGIN --traffic-policy-file $policyFile --inspect=false
         if ($LASTEXITCODE -ne 0) { throw "ngrok termino con el codigo $LASTEXITCODE." }
     } elseif ($Serve) {

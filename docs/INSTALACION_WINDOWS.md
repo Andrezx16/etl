@@ -53,7 +53,15 @@ Con el cubo preparado, cierra la terminal anterior de Mercury. Puedes probar la 
 
 Los correos indicados deben poder iniciar sesión con Google. Abre la URL desde un celular con datos móviles. Comprueba que un correo autorizado pueda iniciar sesión y un correo ajeno quede rechazado antes de compartir el enlace. Toda la aplicación queda detrás del inicio de sesión. Los usuarios autorizados pueden ver los datos, cargar archivos y editar dashboards compartidos. Para preparar la instalación o reprocesar manualmente el cubo, usa el inicio local.
 
-La URL funciona mientras el PC tenga internet y la terminal de Mercury permanezca abierta. Detén la publicación con Ctrl+C. Puedes volver al modo local con `./scripts/dev.ps1`. La prueba está pensada para hasta tres usuarios por mes y está sujeta a los [límites del plan gratuito](https://ngrok.com/docs/pricing-limits).
+Para una prueba pública sin inicio de sesión, sustituye `-AllowedEmail` y la lista de correos por `-Public`.
+
+```powershell
+.\scripts\dev.ps1 -ShareUrl 'https://tu-direccion.ngrok-free.dev' -Public
+```
+
+En modo público, quien abra la URL puede consultar los datos, cargar archivos y editar los dashboards compartidos. La preparación de la instalación y el reprocesamiento manual siguen disponibles desde el modo local.
+
+La URL funciona mientras el PC tenga internet y la terminal de Mercury permanezca abierta. Detén la publicación con Ctrl+C. Puedes volver al modo local con `./scripts/dev.ps1`. El inicio de sesión por correo está pensado para hasta tres usuarios por mes. Ambos modos están sujetos a los [límites del plan gratuito](https://ngrok.com/docs/pricing-limits).
 
 ## Recuperación y alojamiento
 

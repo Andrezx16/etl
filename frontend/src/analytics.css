@@ -79,15 +79,8 @@
 @media(max-width:899px){.bi-shell.with-filters{grid-template-columns:minmax(0,1fr)}.bi-filters{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.bi-filters h3,.bi-filters fieldset,.bi-filters>button{grid-column:1/-1}}
 @media(max-width:570px){.bi-app .work-head{flex-wrap:wrap;padding-block:8px}.bi-modes{order:3;width:100%}.bi-modes button{flex:1}.bi-filters{grid-template-columns:minmax(0,1fr)}.bi-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.bi-kpi{padding:10px!important}.bi-section-tabs button{padding-inline:9px;font-size:.85rem}.bi-chart-card .chart{height:285px}}
 
-.bi-mobile-menu{display:none}
 .bi-chart-card .visual-controls label{min-width:0;max-width:100%}
 .bi-chart-card .visual-controls select{max-width:100%}
-@media(max-width:790px){
- .bi-app .aside{flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center}
- .bi-app .aside .bi-mobile-menu{display:inline-flex;min-height:34px}
- .bi-app .aside:not(.bi-nav-open) :is(nav,.back){display:none}
- .bi-app .aside nav{flex-basis:100%}
-}
 
 .bi-guided{grid-template-columns:minmax(0,1fr)}
 .bi-analysis-select,.bi-analysis-select label,.bi-analysis-select select{min-width:0;max-width:100%}
@@ -103,7 +96,6 @@
 .bi-canvas-only .bi-shell.with-filters{grid-template-columns:minmax(0,1fr)}
 .bi-canvas-only :is(.page-title,.bi-context,.bi-filters,.bi-designs,.bi-builder){display:none}
 @media(max-width:790px){
- .bi-app:not(.app-nav-hidden) .work-nav-toggle{display:none}
  .work-heading{flex-wrap:wrap}
 }
 
@@ -160,15 +152,22 @@
  .bi-unified .bi-filters{position:absolute;z-index:4;top:52px;bottom:0;inset-inline-start:0;width:min(290px,92%);display:grid;grid-template-columns:minmax(0,1fr);box-shadow:0 12px 32px #15173938}
 }
 @media(max-width:790px){
- .bi-unified,.bi-unified.bi-nav-rail{display:flex;flex-direction:column}
- .bi-unified>.aside,.bi-unified.bi-nav-rail>.aside{height:auto;flex:none;padding:5px 12px}
- .bi-unified>.aside>a:first-child,.bi-unified.bi-nav-rail>.aside>a:first-child{margin:0}
- .bi-unified.bi-nav-rail>.aside nav a span,.bi-unified.bi-nav-rail>.aside.bi-nav-open .back{display:inline}
- .bi-unified.bi-nav-rail>.aside nav a{justify-content:flex-start}
- .bi-unified>.workspace{flex:1}
  .bi-unified .work-head{padding-inline:12px}
  .bi-unified .work-body{padding-inline:12px}
  .analysis-tabs{padding:0 6px}
  .analysis-tabs a{padding-inline:8px;font-size:.81rem}
  .bi-unified .cube-version{font-size:.68rem}
+}
+.bi-unified.app-narrow>.workspace{height:100%}
+@media(max-width:640px){
+ .app-narrow .work-head{flex-wrap:wrap;padding-block:6px}
+ .bi-unified .work-status{gap:4px}
+ .bi-unified .analysis-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding-inline:6px;gap:2px}
+ .analysis-tabs a{justify-content:center;text-align:center;padding-inline:3px;line-height:1.25}
+}
+@media(max-height:540px){
+ .bi-unified{height:auto;min-height:100dvh;overflow:visible}
+ .bi-unified.app-narrow>.workspace{height:auto}
+ .bi-unified :is(.board-workspace,.board-root,.board-shell-content,.board-scroll){height:auto;overflow:visible}
+ .bi-unified .board-shell{grid-template-rows:auto;overflow:visible}
 }

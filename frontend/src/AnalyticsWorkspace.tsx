@@ -2,6 +2,7 @@ import {useState,type ReactNode} from 'react'
 import {useQuery} from '@tanstack/react-query'
 import {api,type Option,type Query,type Result} from './client'
 import {Icon} from './Icon'
+import {SideDrawer} from './SideDrawer'
 import './analytics.css'
 
 export type DateRole='anio'|'anio_resolucion'|'anio_ejecutoria'
@@ -39,7 +40,7 @@ export function Members({field,selected,change,version}:{field:Option;selected:O
   </div>
  </details>
 }
-export function AnalyticsWorkspace({filters,setFilters,open,toggle,version,mode,children}:{filters:Filters;setFilters:(f:Filters)=>void;open:boolean;toggle:()=>void;version?:string;mode:string;children:ReactNode}){
+export function AnalyticsWorkspace({filters,setFilters,open,overlay,toggle,version,mode,children}:{filters:Filters;setFilters:(f:Filters)=>void;open:boolean;overlay:boolean;toggle:()=>void;version?:string;mode:string;children:ReactNode}){
  const chips=Object.entries(filters.members).flatMap(([key,values])=>values.map(value=>({key,value})))
  const active=chips.length>0||!!filters.start||!!filters.end||filters.role!=='anio'
  function finishYear(field:'start'|'end',value:string){
@@ -47,12 +48,7 @@ export function AnalyticsWorkspace({filters,setFilters,open,toggle,version,mode,
   const clamped=String(Math.min(lastYear,Math.max(firstYear,Math.trunc(Number(value)))))
   if(clamped!==value)setFilters({...filters,[field]:clamped})
  }
- return <section className={'bi-shell board-shell '+(open?'with-filters':'')} aria-label={mode}>
-  <aside className={'board-filter-region '+(open?'is-open':'')} aria-label="Filtros globales">
-   <div className="board-filter-bar">
-    <h2>Filtros globales</h2><button className="board-filter-button" aria-expanded={open} aria-controls="bi-global-filters" aria-label={open?'Plegar filtros globales':'Desplegar filtros globales'} title={open?'Plegar filtros globales':'Desplegar filtros globales'} onClick={toggle}><span aria-hidden="true">☷</span></button>
-   </div>
-   <div className="board-filter-fields" id="bi-global-filters" hidden={!open}>
+ const fieldsPanel=<div className="board-filter-fields" id="bi-global-filters" hidden={!open}>
    <fieldset><legend>Rango de años</legend><div className="bi-years">
     {(['start','end'] as const).map((field,index)=><label key={field}>{index===0?'Desde':'Hasta'}<input type="number" min={firstYear} max={lastYear} value={filters[field]}
      onChange={e=>setFilters({...filters,[field]:e.target.value})} onBlur={e=>finishYear(field,e.currentTarget.value)} onKeyDown={e=>{if(e.key==='Enter')e.currentTarget.blur()}}/></label>)}
@@ -61,9 +57,16 @@ export function AnalyticsWorkspace({filters,setFilters,open,toggle,version,mode,
    <label className="bi-field">Rol de fecha<select value={filters.role} onChange={e=>setFilters({...filters,role:e.target.value as DateRole})}>{Object.entries(roles).map(([id,label])=><option value={id} key={id}>{label}</option>)}</select></label>
    <button onClick={()=>setFilters(emptyFilters())}>Restablecer filtros</button>
    </div>
-  </aside>
+ return <section className={'bi-shell board-shell '+(overlay?'drawer-filters':open?'with-filters':'')} aria-label={mode}>
+  {overlay?open&&<SideDrawer id="global-filters-drawer" title="Filtros globales" onClose={toggle}>{fieldsPanel}</SideDrawer>:<aside className={'board-filter-region '+(open?'is-open':'')} aria-label="Filtros globales">
+   <div className="board-filter-bar">
+    <h2>Filtros globales</h2><button className="board-filter-button" aria-expanded={open} aria-controls="bi-global-filters" aria-label={open?'Plegar filtros globales':'Desplegar filtros globales'} title={open?'Plegar filtros globales':'Desplegar filtros globales'} onClick={toggle}><Icon name="filters" size={18}/></button>
+   </div>
+   {fieldsPanel}
+  </aside>}
   <div className="board-shell-content">
-   {active&&<div className="board-active-filters" aria-label="Filtros globales activos">
+   {(active||overlay)&&<div className="board-active-filters" aria-label="Filtros globales activos">
+    {overlay&&<button className="board-filter-trigger" onClick={toggle} aria-haspopup="dialog" aria-expanded={open} aria-controls={open?'global-filters-drawer':undefined}><Icon name="filters" size={16}/> Filtros</button>}
     {(filters.start||filters.end)&&<button onClick={()=>setFilters({...filters,start:'',end:''})}>{filters.start||'…'} – {filters.end||'…'} ×</button>}
     {chips.map(({key,value})=><button key={key+value.id} title={'Quitar '+value.label} onClick={()=>setFilters({...filters,members:{...filters.members,[key]:filters.members[key].filter(x=>x.id!==value.id)}})}>{value.label} ×</button>)}
     {filters.role!=='anio'&&<button onClick={()=>setFilters({...filters,role:'anio'})}>{roles[filters.role]} ×</button>}

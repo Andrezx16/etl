@@ -7,6 +7,8 @@ import {api,date,type Health,type Option,type Run} from './client'
 import {Logo} from './Landing'
 import {Visual} from './Visual'
 import {useToast} from './Toast'
+import {Icon} from './Icon'
+import {SideDrawer,useMediaQuery} from './SideDrawer'
 
 const navigation=[['resumen','Resumen','◈'],['carga','Cargar datos','↑'],['historial','Historial','◷'],['analisis','Espacio de análisis','▥'],['configuracion','Configuración','⚙']]
 const analysisTabs=[['analisis','Lienzo'],['analisis/catalogo','Catálogo de análisis'],['analisis/mis-dashboards','Mis dashboards']] as const
@@ -180,7 +182,10 @@ export default function App(){
  }
  function track(id:string){setRun(id);void health.refetch()}
  const [filters,setFilters]=useState<Filters>(emptyFilters)
- const [filterOpen,setFilterOpen]=useState(()=>window.innerWidth>=1280)
+ const overlayFilters=useMediaQuery('(max-width: 1279px)')
+ const [desktopFilters,setDesktopFilters]=useState(true)
+ const [drawerFilters,setDrawerFilters]=useState(false)
+ const mobileNav=useMediaQuery('(max-width: 1023px)')
  const analytic=tab==='analisis'||tab.startsWith('analisis/')
  const [sidebarOpen,setSidebarOpen]=useState(()=>sessionStorage.getItem('mercury-navigation')==='open'||(sessionStorage.getItem('mercury-navigation')===null&&window.innerWidth>=1280))
  useEffect(()=>{
@@ -194,20 +199,22 @@ export default function App(){
   sessionStorage.setItem('mercury-navigation',sidebarOpen?'closed':'open')
  }
  const [navOpen,setNavOpen]=useState(false)
- function toggleFilters(){
-  setFilterOpen(!filterOpen)
- }
+ useEffect(()=>{if(!mobileNav)setNavOpen(false)},[mobileNav])
+ useEffect(()=>{if(!overlayFilters||!analytic)setDrawerFilters(false)},[overlayFilters,analytic])
+ const filterOpen=overlayFilters?drawerFilters:desktopFilters
+ function toggleFilters(){(overlayFilters?setDrawerFilters:setDesktopFilters)(open=>!open)}
  const section=analytic?'analisis':tab
  const label=navigation.find(([id])=>id===section)?.[1]
- return <div className={['app mercury-app',analytic&&'bi-app bi-unified',!sidebarOpen&&(analytic?'bi-nav-rail':'app-nav-hidden')].filter(Boolean).join(' ')}>
-  <aside id="app-sidebar" className={'aside '+(navOpen?'bi-nav-open':'')}>
+ const sidebar=<>
    <a href="/" aria-label="Mercury"><Logo/></a>
-   {analytic&&<button className="bi-mobile-menu" aria-expanded={navOpen} aria-controls="app-nav" onClick={()=>setNavOpen(!navOpen)}>Menú</button>}
    <nav id="app-nav" aria-label="Secciones de trabajo">{navigation.map(([id,text,icon])=><a className={section===id?'active':''} aria-current={section===id?'page':undefined} aria-label={text} title={text} key={id} href={'#'+id} onClick={e=>{e.preventDefault();go(id)}}><i aria-hidden="true">{icon}</i><span>{text}</span></a>)}</nav>
    <a className="back" href="/" title="Volver al sitio">Volver al sitio</a>
-  </aside>
+ </>
+ const navigationOpen=mobileNav?navOpen:sidebarOpen
+ return <div className={['app mercury-app',analytic&&'bi-app bi-unified',mobileNav?'app-narrow':!sidebarOpen&&(analytic?'bi-nav-rail':'app-nav-hidden')].filter(Boolean).join(' ')}>
+  {mobileNav?navOpen&&<SideDrawer id="app-sidebar" title="Menú" onClose={()=>setNavOpen(false)}><div className="drawer-navigation">{sidebar}</div></SideDrawer>:<aside id="app-sidebar" className="aside">{sidebar}</aside>}
   <main className="workspace"><header className="work-head"><div className="work-heading">
-   <button className="work-nav-toggle" onClick={toggleNavigation} aria-expanded={sidebarOpen} aria-controls="app-sidebar" title={sidebarOpen?'Plegar navegación':'Expandir navegación'} aria-label={sidebarOpen?'Plegar navegación':'Expandir navegación'}><span aria-hidden="true">☰</span></button>
+   <button className="work-nav-toggle" onClick={mobileNav?()=>setNavOpen(!navOpen):toggleNavigation} aria-expanded={navigationOpen} aria-controls={mobileNav&&!navOpen?undefined:'app-sidebar'} aria-haspopup={mobileNav?'dialog':undefined} title={mobileNav?'Abrir menú':navigationOpen?'Plegar navegación':'Expandir navegación'} aria-label={mobileNav?'Abrir menú':navigationOpen?'Plegar navegación':'Expandir navegación'}><Icon name="menu" size={20}/></button>
    {analytic?<h1>{label}</h1>:<span>Mercury <span className="slash">/</span> {label}</span>}
   </div><div className="work-status">
    {analytic&&version&&<span className="cube-version" title={'Versión '+version+(health.data?.publication?.published?' · '+date(health.data.publication.published):'')}>Cubo <strong>v{version.slice(0,8)}</strong></span>}
@@ -224,7 +231,7 @@ export default function App(){
    </div>}
    {tab==='carga'&&<Upload health={health.data} track={track}/>}
    {tab==='historial'&&<History initial={run}/>}
-   {analytic&&<AnalyticsWorkspace mode="Área analítica" filters={filters} setFilters={setFilters} open={filterOpen} toggle={toggleFilters} version={version}>
+   {analytic&&<AnalyticsWorkspace mode="Área analítica" filters={filters} setFilters={setFilters} open={filterOpen} overlay={overlayFilters} toggle={toggleFilters} version={version}>
     {tab==='analisis/catalogo'&&<section className="board-catalog">
      <h2>Catálogo de análisis</h2>
      <div className="board-library-cards">{Object.entries(catalogCards).map(([id,card])=><article className="card" key={id}><small>{id}</small><h3>{card.title}</h3><p>{card.detail}</p><button onClick={()=>openEditor(id)}>Añadir al dashboard</button></article>)}</div>

@@ -11,6 +11,7 @@ import {cardContext,catalogCards,fromTemplate,templates,titleFor,type Dashboard,
 import {DataDock,WorkDialog} from './DataDock'
 import {CardEditor} from './CardEditor'
 import {useToast} from './Toast'
+import {SideDrawer,useMediaQuery} from './SideDrawer'
 import './board.css'
 
 type Context=ReturnType<typeof cardContext>
@@ -26,12 +27,21 @@ function normalizeLegacyCharts(design:Dashboard):Dashboard{
 function CanvasCard({widget,title,result,context,failure,reload,loading,chosen,select,showTable,edit,duplicate,remove,editing,menu,setMenu,member,onPick}:{widget:Widget;title:string;result?:Result;context:Context;failure?:string;reload:()=>void;loading:boolean;chosen:boolean;select:()=>void;showTable:()=>void;edit:()=>void;duplicate:()=>void;remove:()=>void;editing:boolean;menu:boolean;setMenu:(open:boolean)=>void;member?:string;onPick?:(member:string)=>void}){
  const chart=useRef<ECharts|null>(null)
  const [information,setInformation]=useState(false)
+ const [menuAbove,setMenuAbove]=useState(false)
+ const menuWrap=useRef<HTMLDivElement>(null)
+ const drawerMenu=useMediaQuery('(max-width: 1023px)')
  const notify=useToast()
  const definition=widget.catalog?catalogCards[widget.catalog]:undefined
  const particular=Object.entries(widget.query?.filters??{}).filter(([,values])=>values.length)
  const pickRef=useRef(onPick)
  useEffect(()=>{pickRef.current=onPick},[onPick])
  const pick=useCallback((value:string)=>pickRef.current?.(value),[])
+ useEffect(()=>{
+  if(!menu||drawerMenu)return
+  const outside=(event:PointerEvent)=>{if(event.target instanceof Node&&!menuWrap.current?.contains(event.target))setMenu(false)}
+  document.addEventListener('pointerdown',outside)
+  return ()=>document.removeEventListener('pointerdown',outside)
+ },[menu,drawerMenu,setMenu])
  function action(callback:()=>void){setMenu(false);callback()}
  async function exportFile(format:string){
   setMenu(false)
@@ -43,21 +53,28 @@ function CanvasCard({widget,title,result,context,failure,reload,loading,chosen,s
    }else if(result)await download(result.resultId,format,{member:member??''})
   }catch(e){notify(readable(e),'error')}
  }
+ const actions=<>
+  <button onClick={()=>action(showTable)}>Ver tabla</button><button onClick={()=>action(edit)}>Editar</button>
+  <button onClick={()=>action(duplicate)}>Duplicar</button>
+  <details><summary>Exportar</summary><div><button disabled={!result} onClick={()=>void exportFile('csv')}>CSV</button><button disabled={!result} onClick={()=>void exportFile('xlsx')}>XLSX</button><button disabled={!chart.current} onClick={()=>void exportFile('png')}>PNG</button></div></details>
+  <button onClick={()=>action(()=>setInformation(true))}>Información</button>
+  <button className="board-delete" onClick={()=>action(remove)}>Eliminar</button>
+ </>
  return <article className={'board-card '+(chosen?'is-selected':'')}>
   <div className="board-card-head">
    <div className="board-card-heading">
     <h3><button className={editing?'board-drag':''} aria-pressed={chosen} onClick={select}>{editing&&<span aria-hidden="true">⠿ </span>}{title}</button></h3>
     <p>{definition?(widget.catalog+' · '+(choices.find(([id])=>id===widget.chart)?.[1]??'Análisis')):choices.find(([id])=>id===widget.chart)?.[1]}</p>
    </div>
-   <div className="board-menu-wrap">
-    <button className="board-more" aria-label={'Acciones: '+title} aria-expanded={menu} onClick={()=>setMenu(!menu)}>⋯</button>
-    {menu&&<div className="board-menu" aria-label="Acciones de visualización" onKeyDown={e=>{if(e.key==='Escape')setMenu(false)}}>
-     <button onClick={()=>action(showTable)}>Ver tabla</button><button onClick={()=>action(edit)}>Editar</button>
-     <button onClick={()=>action(duplicate)}>Duplicar</button>
-     <details><summary>Exportar</summary><div><button disabled={!result} onClick={()=>void exportFile('csv')}>CSV</button><button disabled={!result} onClick={()=>void exportFile('xlsx')}>XLSX</button><button disabled={!chart.current} onClick={()=>void exportFile('png')}>PNG</button></div></details>
-     <button onClick={()=>action(()=>setInformation(true))}>Información</button>
-     <button className="board-delete" onClick={()=>action(remove)}>Eliminar</button>
-    </div>}
+   <div className="board-menu-wrap" ref={menuWrap}>
+    <button className="board-more" aria-label={'Acciones: '+title} aria-expanded={menu} aria-haspopup={drawerMenu?'dialog':undefined} onKeyDown={e=>{if(e.key==='Escape')setMenu(false)}} onClick={e=>{
+     const trigger=e.currentTarget.getBoundingClientRect()
+     const area=e.currentTarget.closest('.board-scroll')?.getBoundingClientRect()
+     setMenuAbove(Boolean(area&&area.bottom-trigger.bottom<235&&trigger.top-area.top>area.bottom-trigger.bottom))
+     setMenu(!menu)
+    }}>⋯</button>
+    {menu&&(drawerMenu?<SideDrawer title="Acciones de visualización" side="right" onClose={()=>setMenu(false)}><div className="drawer-actions">{actions}</div></SideDrawer>
+     :<div className={'board-menu '+(menuAbove?'board-menu-above':'')} aria-label="Acciones de visualización" onKeyDown={e=>{if(e.key==='Escape')setMenu(false)}}>{actions}</div>)}
    </div>
   </div>
   {(context.applied.length>0||context.unavailable.length>0||particular.length>0)&&<div className="board-tags">
@@ -80,6 +97,7 @@ function CanvasCard({widget,title,result,context,failure,reload,loading,chosen,s
 }
 
 export default function DashboardCanvas({section,version,filters,onCanvas,seed,consume}:{section:string;version?:string;filters:Filters;onCanvas:()=>void;seed:string;consume:()=>void}){
+ const drawerEditor=useMediaQuery('(max-width: 1279px)')
  const [design,setDesign]=useState<Dashboard>(()=>fromTemplate('panorama'))
  const [source,setSource]=useState('template:panorama')
  const [savedId,setSavedId]=useState('')
@@ -192,40 +210,47 @@ export default function DashboardCanvas({section,version,filters,onCanvas,seed,c
    notify('Dashboard eliminado.')
   }catch(e){notify(readable(e),'error')}
  }
- const columns=width>=790?12:width>=520?6:1
- const positions=design.widgets.map((w,i)=>({i:w.id,x:columns===12?w.x:0,y:columns===12?w.y:i*5,w:columns===12?w.w:columns,h:columns===12?w.h:4,minW:columns===12?3:1,minH:3,maxH:16}))
+ const gridLayout=width>=890
+ const positions=design.widgets.map(w=>({i:w.id,x:w.x,y:w.y,w:w.w,h:w.h,minW:3,minH:3,maxH:16}))
+ function renderCard(widget:Widget,i:number){
+  return <div key={widget.id} className={menu===widget.id?'board-menu-open':''} data-wide={widget.w>=8||undefined}
+   style={gridLayout?undefined:{height:Math.max(254,widget.h*46)}}>
+   <CanvasCard widget={widget} title={generatedNames[i]} result={scoped[i]} member={targetMembers[i]} onPick={crossGroup(widget)?value=>pickChart(widget,responses[i]?.data,value):undefined} context={contexts[i]} failure={responses[i]?.error?.message} reload={()=>void responses[i]?.refetch()} loading={responses[i]?.isFetching??false} chosen={selected===widget.id} select={()=>choose(widget.id)} showTable={()=>showTable(widget.id)} edit={()=>setEditor(widget.id)} duplicate={()=>addWidget({...widget,id:crypto.randomUUID()})} remove={()=>removeWidget(widget.id)} editing={editing&&gridLayout} menu={menu===widget.id} setMenu={open=>setMenu(open?widget.id:'')}/>
+  </div>
+ }
+ const editorPanel=editor&&<CardEditor key={editor} widget={editorWidget} version={version} filters={filters} onSave={addWidget} onClose={()=>setEditor(null)} inDrawer={drawerEditor}/>
  return <div className={'board-root '+(canvas?'board-active':'')}>
   <div className="board-workspace" hidden={!canvas}>
    <header className="board-toolbar">
     <div className="board-title"><label htmlFor="board-source">Dashboard</label><select id="board-source" value={source} onChange={e=>load(e.target.value,false)}><optgroup label="Plantillas">{templates.map(t=><option key={t.id} value={'template:'+t.id}>{t.name}</option>)}</optgroup><optgroup label="Diseños"><option value="new">Mi dashboard</option>{dashboards.data?.map(d=><option key={d.id} value={d.id}>{d.name}</option>)}</optgroup></select></div>
     <div className="board-toolbar-actions">
      {dirty&&<small role="status">Cambios sin guardar</small>}
-     <button aria-pressed={editing} onClick={()=>setEditing(!editing)}>{editing?'Terminar edición':'Editar diseño'}</button>
+     {gridLayout&&<button aria-pressed={editing} onClick={()=>setEditing(!editing)}>{editing?'Terminar edición':'Editar diseño'}</button>}
      <button onClick={()=>void save()}>{savedId?'Guardar cambios':'Guardar dashboard'}</button>
      <button className="primary" disabled={design.widgets.length>=24} onClick={()=>setEditor('new')}>+ Añadir visualización</button>
     </div>
    </header>
    {cross&&crossCount>0&&<div className="board-cross"><span>Selección cruzada · {cross.member} · {crossCount} visualizaciones</span><button onClick={()=>setCross(undefined)}>Limpiar selección</button></div>}
-   <div className={'board-center '+(editor?'with-board-editor':'')}>
+   <div className={'board-center '+(editor&&!drawerEditor?'with-board-editor':'')}>
     <div className="board-scroll" onClick={e=>{if(e.target instanceof Element&&!e.target.closest('.board-menu-wrap'))setMenu('')}}>
      <Kpis version={version} filters={filters}/>
      <div className="board-grid" ref={holder}>
       {!design.widgets.length&&<div className="board-empty"><h3>Tu dashboard está vacío</h3><p>Añade una consulta guardada o construye una visualización para este lienzo.</p><button className="primary" onClick={()=>setEditor('new')}>Añadir visualización</button></div>}
-      {width>0&&<Grid width={width} cols={columns} rowHeight={38} margin={[14,14]} containerPadding={[0,0]} layout={positions} draggableHandle=".board-drag" draggableCancel=".board-menu-wrap" isDraggable={editing&&columns===12} isResizable={editing&&columns===12}
+      {gridLayout?<Grid width={width} cols={12} rowHeight={38} margin={[14,14]} containerPadding={[0,0]} layout={positions} draggableHandle=".board-drag" draggableCancel=".board-menu-wrap" isDraggable={editing} isResizable={editing}
        onLayoutChange={items=>{
-        if(!editing||columns!==12)return
+        if(!editing)return
         setDesign(current=>{
          const widgets=current.widgets.map(w=>{const item=items.find(x=>x.i===w.id);return item?{...w,x:item.x,y:item.y,w:item.w,h:item.h}:w})
          return JSON.stringify(widgets)===JSON.stringify(current.widgets)?current:{...current,widgets}
         })
        }}>
-       {design.widgets.map((widget,i)=><div key={widget.id} className={menu===widget.id?'board-menu-open':''}>
-        <CanvasCard widget={widget} title={generatedNames[i]} result={scoped[i]} member={targetMembers[i]} onPick={crossGroup(widget)?value=>pickChart(widget,responses[i]?.data,value):undefined} context={contexts[i]} failure={responses[i]?.error?.message} reload={()=>void responses[i]?.refetch()} loading={responses[i]?.isFetching??false} chosen={selected===widget.id} select={()=>choose(widget.id)} showTable={()=>showTable(widget.id)} edit={()=>setEditor(widget.id)} duplicate={()=>addWidget({...widget,id:crypto.randomUUID()})} remove={()=>removeWidget(widget.id)} editing={editing} menu={menu===widget.id} setMenu={open=>setMenu(open?widget.id:'')}/>
-       </div>)}
-      </Grid>}
+       {design.widgets.map(renderCard)}
+      </Grid>:<div className={'board-adaptive '+(width>=650?'board-adaptive-split':'')}>
+       {design.widgets.map((widget,i)=>({widget,i})).sort((a,b)=>a.widget.y-b.widget.y||a.widget.x-b.widget.x).map(({widget,i})=>renderCard(widget,i))}
+      </div>}
      </div>
     </div>
-    {editor&&<CardEditor key={editor} widget={editorWidget} version={version} filters={filters} onSave={addWidget} onClose={()=>setEditor(null)}/>}
+    {editorPanel&&(drawerEditor?<SideDrawer title={editorWidget?'Editar visualización':'Añadir visualización'} side="right" onClose={()=>setEditor(null)}>{editorPanel}</SideDrawer>:editorPanel)}
    </div>
    <DataDock key={active?.id??'none'} title={active?generatedNames[selectedIndex]:undefined} result={result} dashboard={source} applied={contexts[selectedIndex]?.applied??[]} fixed={active?.catalog?catalogCards[active.catalog]?.fixed:undefined} member={targetMembers[selectedIndex]} expanded={expanded} onToggle={()=>setExpanded(!expanded)}/>
   </div>

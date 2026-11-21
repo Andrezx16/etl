@@ -3,6 +3,7 @@ const paths={
  down:'M12 4v15m-6-6 6 6 6-6',
  up:'M12 20V5m-6 6 6-6 6 6',
  menu:'M4 6h16M4 12h16M4 18h16',
+ filters:'M4 6h4m4 0h8M4 12h10m4 0h2M4 18h2m4 0h10M8 4v4m6 2v4m-8 2v4',
  close:'m6 6 12 12M18 6 6 18',
  upload:'M12 16V4m-4 4 4-4 4 4M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4',
  check:'M12 22s8-3 8-10V6l-8-4-8 4v6c0 7 8 10 8 10Zm-4-10 3 3 5-5',

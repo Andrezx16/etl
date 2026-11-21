@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react'
 import {motion,useReducedMotion} from 'motion/react'
 import {Icon} from './Icon'
+import {SideDrawer,useMediaQuery} from './SideDrawer'
 
 const links=[['inicio','Inicio'],['que-es','Qué es'],['flujo','Cómo funciona'],['tecnologias','Tecnologías'],['vista-previa','Vista previa']]
 const steps=[
@@ -18,6 +19,7 @@ const technologies=[
 export function Logo(){return <img className="wordmark" src="/logo.png" alt="Mercury" width="145" height="49"/>}
 export default function Landing(){
  const [open,setOpen]=useState(false)
+ const narrow=useMediaQuery('(max-width: 1023px)')
  const [scrolled,setScrolled]=useState(()=>window.scrollY>8)
  useEffect(()=>{
   const update=()=>setScrolled(window.scrollY>8)
@@ -25,17 +27,21 @@ export default function Landing(){
   window.addEventListener("scroll",update,{passive:true})
   return ()=>window.removeEventListener("scroll",update)
  },[])
+ useEffect(()=>{if(!narrow)setOpen(false)},[narrow])
  const reduced=useReducedMotion()
  const appear=reduced?{}:{initial:{opacity:0,y:14},animate:{opacity:1,y:0},transition:{duration:.65}}
  return <div className="landing">
   <header className={scrolled?"site-head scrolled":"site-head"}><a href="#inicio" aria-label="Mercury, inicio"><Logo/></a>
-   <button className="mobile-menu" aria-expanded={open} aria-controls="site-links" onClick={()=>setOpen(!open)}><Icon name={open?'close':'menu'} size={18}/>Menú</button>
-   <nav id="site-links" aria-label="Navegación principal" className={open?'links open':'links'}>
-    {links.map(([id,label])=><a href={'#'+id} key={id} onClick={()=>setOpen(false)}>{label}</a>)}
-    <a className="primary mobile-cta" href="/app">Entrar a la plataforma <Icon name="arrow" size={17}/></a>
-   </nav>
-   <a className="primary nav-cta" href="/app">Entrar a la plataforma <Icon name="arrow" size={17}/></a>
+   {narrow?<button className="mobile-menu" aria-expanded={open} aria-haspopup="dialog" aria-controls={open?'site-links':undefined} onClick={()=>setOpen(true)}><Icon name="menu" size={18}/>Menú</button>:<>
+    <nav aria-label="Navegación principal" className="links">{links.map(([id,label])=><a href={'#'+id} key={id}>{label}</a>)}</nav>
+    <a className="primary nav-cta" href="/app">Entrar a la plataforma <Icon name="arrow" size={17}/></a>
+   </>}
   </header>
+  {narrow&&open&&<SideDrawer id="site-links" title="Menú" onClose={()=>setOpen(false)}>
+   <nav className="landing-drawer-links" aria-label="Navegación principal">{links.map(([id,label])=><a href={'#'+id} key={id} onClick={()=>setOpen(false)}>{label}</a>)}
+    <a className="primary" href="/app">Entrar a la plataforma <Icon name="arrow" size={17}/></a>
+   </nav>
+  </SideDrawer>}
   <main>
    <section className="hero" id="inicio">
     <div className="hero-image" aria-hidden="true"><img src="/hero.webp" alt="" width="1600" height="900" fetchPriority="high"/></div>

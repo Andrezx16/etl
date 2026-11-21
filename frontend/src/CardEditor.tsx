@@ -11,7 +11,7 @@ const presets=[['Pequeña',4,4],['Mediana',6,5],['Grande',8,6],['Ancho completo'
 function memberLabel(id:string){
  return id.match(/&\[([^\]]+)\]$/)?.[1]??id
 }
-export function CardEditor({widget,version,filters,onSave,onClose}:{widget?:Widget;version?:string;filters:Filters;onSave:(w:Widget)=>void;onClose:()=>void}){
+export function CardEditor({widget,version,filters,onSave,onClose,inDrawer=false}:{widget?:Widget;version?:string;filters:Filters;onSave:(w:Widget)=>void;onClose:()=>void;inDrawer?:boolean}){
  const [catalog,setCatalog]=useState(widget?.catalog??'')
  const q=widget?.query
  const [dimension,setDimension]=useState(q?.dimension??'anio')
@@ -55,7 +55,7 @@ export function CardEditor({widget,version,filters,onSave,onClose}:{widget?:Widg
  }
  const valid=!!catalog||Boolean(dimension&&measures.length&&dimension!==second)
  return <aside className="board-editor" aria-label={widget?'Editar visualización':'Añadir visualización'}>
-  <header><h2>{widget?'Editar visualización':'Añadir visualización'}</h2><button onClick={onClose} aria-label="Cerrar editor">×</button></header>
+  {!inDrawer&&<header><h2>{widget?'Editar visualización':'Añadir visualización'}</h2><button onClick={onClose} aria-label="Cerrar editor">×</button></header>}
   <label>Origen<select value={catalog} onChange={e=>{const id=e.target.value;setCatalog(id);setChart(id?catalogCards[id].chart:'bar');setPreview(undefined)}}><option value="">Consulta personalizada</option>{Object.entries(catalogCards).map(([id,card])=><option key={id} value={id}>{id} · {card.title}</option>)}</select></label>
   <label>Título<input maxLength={120} value={title} onChange={e=>setTitle(e.target.value)} placeholder="Usar el título de la consulta"/></label>
   {catalog?<p>{catalogCards[catalog].detail}</p>:<>

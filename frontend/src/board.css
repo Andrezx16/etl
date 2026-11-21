@@ -43,13 +43,15 @@
 .board-shell-content{min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden}
 .board-active-filters{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:7px 16px;background:#fff;border-bottom:1px solid var(--board-border)}
 .board-active-filters button,.board-tags>span,.board-tags>button{font-size:.71rem;min-height:23px;padding:3px 7px;border:1px solid #d7e3fb;border-radius:20px;background:var(--blue-soft);color:var(--ink);white-space:nowrap}
+.board-active-filters>button,.board-tags>button{max-width:100%;overflow:hidden;text-overflow:ellipsis;display:block}
+.board-active-filters .board-filter-trigger{display:inline-flex;gap:5px;min-height:34px;padding-inline:10px;font-size:.81rem;border-radius:8px}
 .board-root{display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden;flex:1}
 .board-workspace{display:flex;flex-direction:column;min-height:0;height:100%;min-width:0;flex:1;overflow:hidden}
 .board-toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:8px 16px;background:#fff;border-bottom:1px solid var(--board-border);flex:none}
 .board-toolbar button,.dock-bar button,.dock-controls button,.board-editor button{min-height:33px;font-size:.82rem;padding:5px 9px}
 .board-title{display:flex;align-items:center;gap:8px;min-width:0}
 .board-title label{font-size:.8rem;color:var(--board-muted)}
-.board-title select{border:0;padding:3px 12px 3px 3px;font-size:1.04rem;font-weight:700;color:var(--board-accent);min-width:0}
+.board-title select{border:0;padding:3px 12px 3px 3px;font-size:1.04rem;font-weight:700;color:var(--board-accent);min-width:0;text-overflow:ellipsis}
 .board-toolbar-actions{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
 .board-toolbar-actions button[aria-pressed=true]{background:var(--blue-soft);border-color:#d7e3fb}
 .board-center{flex:1;display:grid;grid-template-columns:minmax(0,1fr);min-height:0;min-width:0;position:relative}
@@ -68,6 +70,10 @@
 .board-grid{width:100%;min-width:0}
 .board-grid .react-grid-item{min-width:0}
 .board-grid .react-grid-item.board-menu-open{z-index:6}
+.board-adaptive{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.board-adaptive-split{grid-template-columns:repeat(2,minmax(0,1fr))}
+.board-adaptive-split>[data-wide]{grid-column:1/-1}
+.board-adaptive>.board-menu-open{z-index:6}
 .board-card{
  height:100%;min-width:0;min-height:0;display:flex;flex-direction:column;gap:3px;padding:10px 12px 7px;
  background:radial-gradient(ellipse at top right,#eef4ff,transparent 55%),#fff;border:1px solid var(--board-border);border-radius:var(--board-radius);box-shadow:var(--board-shadow);position:relative
@@ -94,6 +100,12 @@
 .board-more{height:29px;min-height:29px;width:31px;padding:0;font-size:1.25rem;line-height:1;background:var(--blue-soft);border-color:var(--board-border)}
 .board-menu-wrap{position:relative;flex:none}
 .board-menu{position:absolute;top:33px;right:0;width:156px;z-index:7;display:grid;background:#fff;padding:5px;border:1px solid var(--board-border);border-radius:10px;box-shadow:0 8px 24px #17224428}
+.board-menu-above{top:auto;bottom:33px}
+.drawer-actions{display:grid;gap:8px}
+.drawer-actions>button,.drawer-actions>details{width:100%;justify-content:flex-start;text-align:left}
+.drawer-actions>details{border:1px solid var(--line);border-radius:9px;padding:0 .8rem}
+.drawer-actions details>div{display:flex;gap:5px;flex-wrap:wrap;padding-bottom:8px}
+.drawer-actions .board-delete{color:#9f2639}
 .board-menu>button,.board-menu summary{display:block;width:100%;text-align:left;min-height:31px;border:0;border-radius:5px;background:#fff;color:var(--board-text);padding:6px;font-size:.83rem}
 .board-menu>button:hover,.board-menu summary:hover{background:var(--blue-soft)}
 .board-menu details>div{display:flex;gap:3px;margin-block:4px}
@@ -134,26 +146,31 @@
 .board-library-cards article button{font-size:.84rem;min-height:34px}
 .board-catalog details{margin-top:12px}
 @media(max-width:1279px){
- .bi-unified .board-shell.with-filters{grid-template-columns:44px minmax(0,1fr)}
- .board-filter-region.is-open{position:absolute;inset:0 auto 0 0;width:min(260px,91vw);z-index:8;box-shadow:0 14px 34px #131c4538}
- .board-center.with-board-editor{grid-template-columns:minmax(0,1fr)}
- .board-editor{position:absolute;inset:0 0 0 auto;width:min(340px,100%);z-index:9;box-shadow:0 10px 28px #131c4538}
+ .bi-unified .board-shell.drawer-filters{grid-template-columns:minmax(0,1fr)}
+ .board-shell.drawer-filters>.board-shell-content{grid-column:1}
+ .side-drawer .board-editor,.side-drawer .board-filter-fields{padding:0;overflow:visible;border:0}
 }
 @media(max-width:640px){
- .bi-unified .board-shell,.bi-unified .board-shell.with-filters{grid-template-columns:34px minmax(0,1fr)}
- .board-filter-button{width:26px}
- .board-filter-region:not(.is-open) .board-filter-bar{padding:5px 2px}
- .board-toolbar,.board-active-filters,.board-scroll,.dock-bar,.dock-body{padding-inline:8px}
+ .board-toolbar,.board-active-filters,.board-scroll,.dock-bar,.dock-body{padding-inline:12px}
+ .board-title{width:100%}
+ .board-title select{flex:1}
  .board-toolbar-actions button{font-size:.74rem;padding-inline:6px}
+ .board-toolbar-actions small{flex-basis:100%}
  .board-scroll .bi-kpis{gap:6px}
  .board-scroll .bi-kpi{padding-inline:8px!important}
  .bi-kpi-head p{font-size:.77rem}
  .bi-kpi-icon{width:21px;height:21px}
- .dock-bar{font-size:.74rem}
- .data-dock.dock-expanded{height:min(45dvh,320px)}
+ .dock-bar{font-size:.74rem;flex-wrap:wrap}
+ .dock-bar>div:first-child{min-width:0;overflow-wrap:anywhere}
+ .dock-tabs,.dock-actions{flex-wrap:wrap}
+ .board-workspace{position:relative}
+ .data-dock.dock-expanded{position:absolute;inset:auto 0 0;z-index:7;height:min(56dvh,380px);max-height:56dvh;box-shadow:0 -9px 24px #14183c26}
+ .dock-resizer{display:none}
  .dock-controls label{max-width:100%}
+ .dock-controls input{min-width:0}
  .dock-controls select{max-width:170px}
 }
+@media(max-height:540px){.data-dock.dock-expanded{position:relative}}
 
 .board-shell-content{grid-column:2;grid-row:1}
 

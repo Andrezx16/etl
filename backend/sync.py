@@ -41,7 +41,7 @@ def connect_sql(*, staging=False):
         cn = pyodbc.connect(connection_string, timeout=5)
     except pyodbc.Error as exc:
         raise sync_error("conectar con la replica de SQL Server", exc) from exc
-    cn.timeout = 120
+    cn.timeout = 300
     return cn
 
 def qualify(alias, columns):

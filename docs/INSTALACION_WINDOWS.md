@@ -43,9 +43,19 @@ En cada consola ejecuta `. ./scripts/env.ps1` desde la raíz si deseas cargar el
 | SSAS | `dotnet run --project ssas-service --no-launch-profile` |
 | Frontend | `npm.cmd --prefix frontend run dev` |
 
-## Prueba desde otra red con ngrok
+## Compartir Mercury desde tu PC con ngrok
 
-Con el cubo preparado, cierra la terminal anterior de Mercury. Puedes probar la interfaz compilada y la API juntas en tu PC con `./scripts/dev.ps1 -Serve`. Para compartirlas desde fuera, instala [ngrok para Windows](https://ngrok.com/download/windows), crea una cuenta gratuita y agrega su token en tu terminal con `ngrok config add-authtoken`. Si usas una copia portátil de ngrok en `.mercury/tools`, ejecuta `./.mercury/tools/ngrok.exe config add-authtoken` con el token. Usa la dirección de desarrollo que ngrok asigna a tu cuenta.
+1. Instala ngrok en el PC que ejecuta Mercury. Crea tu cuenta y sigue las instrucciones de ngrok para vincular el agente con tu token una sola vez. Si usas una copia portátil en `.mercury/tools`, ejecuta `./.mercury/tools/ngrok.exe config add-authtoken` con tu token. [Instalación de ngrok para Windows](https://ngrok.com/download/windows)
+2. Con el cubo preparado, detén Mercury con `Ctrl+C` en la terminal anterior y ejecuta el siguiente comando desde la carpeta del proyecto.
+
+   ```powershell
+   .\scripts\dev.ps1 -Share
+   ```
+
+3. En el primer inicio, pega tu dominio de desarrollo y elige si el acceso será por correo o público. El asistente guarda el dominio y el modo de acceso en `.mercury/sharing.json`, que se queda en el PC. El token se guarda en la configuración de ngrok. [Dominios de tu cuenta](https://dashboard.ngrok.com/domains)
+4. Comparte el enlace que imprime Mercury. En los siguientes inicios usa el mismo comando. Para cambiar el dominio o los permisos, ejecuta `.\scripts\dev.ps1 -ConfigureShare`. Si ngrok indica que el dominio ya está activo, cierra la terminal que ejecuta el túnel anterior y vuelve a iniciar Mercury.
+
+Puedes probar la interfaz compilada y la API juntas en tu PC con `./scripts/dev.ps1 -Serve`. También puedes indicar el dominio y el modo directamente en el comando.
 
 ```powershell
 .\scripts\dev.ps1 -ShareUrl 'https://tu-direccion.ngrok-free.dev' -AllowedEmail 'tu-correo@gmail.com','correo-de-tu-companero@gmail.com'

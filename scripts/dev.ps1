@@ -1,6 +1,51 @@
-param([switch]$Serve, [string]$ShareUrl, [string[]]$AllowedEmail, [switch]$Public)
+param(
+    [switch]$Serve, [string]$ShareUrl, [string[]]$AllowedEmail, [switch]$Public,
+    [switch]$Share, [switch]$ConfigureShare
+)
 $ErrorActionPreference = 'Stop'
-if ($ShareUrl -or $AllowedEmail -or $Public) {
+if ($ConfigureShare) { $Share = $true }
+if ($Share -and ($PSBoundParameters.ContainsKey('ShareUrl') -or
+    $PSBoundParameters.ContainsKey('AllowedEmail') -or $PSBoundParameters.ContainsKey('Public'))) {
+    throw 'Usa -Share para el asistente, o indica la URL y el modo de acceso por parametros.'
+}
+if ($Share -or $ShareUrl -or $AllowedEmail -or $Public) {
+    $shareDirectory = Join-Path (Split-Path -Parent $PSScriptRoot) '.mercury'
+    $ngrok = (Get-Command ngrok.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
+    if (-not $ngrok) {
+        $portableNgrok = Join-Path $shareDirectory 'tools/ngrok.exe'
+        if (Test-Path -LiteralPath $portableNgrok -PathType Leaf) { $ngrok = $portableNgrok }
+    }
+    if (-not $ngrok) { throw 'Instala ngrok desde https://ngrok.com/download/windows, vincula tu cuenta y vuelve a ejecutar el comando.' }
+
+    if ($Share) {
+        $shareConfig = Join-Path $shareDirectory 'sharing.json'
+        $configure = $ConfigureShare -or -not (Test-Path -LiteralPath $shareConfig -PathType Leaf)
+        if ($configure) {
+            Write-Host 'Configuracion de ngrok para Mercury'
+            Write-Host 'Encuentra tu dominio de desarrollo en https://dashboard.ngrok.com/domains'
+            $ShareUrl = (Read-Host 'Dominio de ngrok').Trim()
+            if ($ShareUrl -and $ShareUrl -notmatch '://') { $ShareUrl = "https://$ShareUrl" }
+            Write-Host '1. Permitir acceso solo a los correos que indiques'
+            Write-Host '2. Acceso publico. Quien tenga el enlace puede ver datos, cargar Excel y editar dashboards'
+            switch ((Read-Host 'Modo de acceso [1]').Trim()) {
+                { $_ -in '', '1' } { $AllowedEmail = (Read-Host 'Correos de Google (uno a tres, separados por comas)') -split ',' }
+                '2' { $Public = $true }
+                default { throw 'Elige 1 o 2 para el modo de acceso.' }
+            }
+        } else {
+            try {
+                $saved = Get-Content -LiteralPath $shareConfig -Raw | ConvertFrom-Json
+                if ($saved.publicAccess -isnot [bool]) { throw 'Modo de acceso invalido.' }
+                $ShareUrl = $saved.url
+                $Public = $saved.publicAccess
+                $AllowedEmail = $saved.allowedEmails
+            } catch {
+                throw 'No se pudo leer la configuracion de ngrok. Ejecuta .\scripts\dev.ps1 -ConfigureShare.'
+            }
+            Write-Host 'Usando la configuracion local de ngrok. Para cambiarla, ejecuta dev.ps1 -ConfigureShare.'
+        }
+    }
+
     if ($ShareUrl -notmatch '^https://[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.ngrok-free\.(?:app|dev)/?$') {
         throw 'Usa la URL HTTPS que ngrok asigno a tu cuenta gratuita.'
     }
@@ -14,12 +59,15 @@ if ($ShareUrl -or $AllowedEmail -or $Public) {
             throw 'Usa -AllowedEmail con uno a tres correos, o usa -Public para compartir sin inicio de sesion.'
         }
     }
-    $ngrok = (Get-Command ngrok.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
-    if (-not $ngrok) {
-        $portableNgrok = Join-Path (Split-Path -Parent $PSScriptRoot) '.mercury/tools/ngrok.exe'
-        if (Test-Path -LiteralPath $portableNgrok -PathType Leaf) { $ngrok = $portableNgrok }
+    if ($Share -and $configure) {
+        $config = @{
+            url = $ShareUrl.TrimEnd('/').ToLowerInvariant()
+            publicAccess = [bool]$Public
+            allowedEmails = @($AllowedEmail | Where-Object { $_ })
+        }
+        New-Item -ItemType Directory -Force $shareDirectory | Out-Null
+        [IO.File]::WriteAllText($shareConfig, ($config | ConvertTo-Json))
     }
-    if (-not $ngrok) { throw 'Instala ngrok para Windows y configura tu token en su CLI antes de compartir Mercury.' }
     $Serve = $true
 }
 . "$PSScriptRoot/env.ps1"

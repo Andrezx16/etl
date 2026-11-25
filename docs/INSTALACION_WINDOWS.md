@@ -73,6 +73,15 @@ En modo público, quien abra la URL puede consultar los datos, cargar archivos y
 
 La URL funciona mientras el PC tenga internet y la terminal de Mercury permanezca abierta. Detén la publicación con Ctrl+C. Puedes volver al modo local con `./scripts/dev.ps1`. El inicio de sesión por correo está pensado para hasta tres usuarios por mes. Ambos modos están sujetos a los [límites del plan gratuito](https://ngrok.com/docs/pricing-limits).
 
+## Cancelar una carga bloqueada
+
+1. Copia los primeros ocho caracteres del ID de la carga en **Historial**.
+2. En el equipo que aloja Mercury, detén el servidor con `Ctrl+C` en la terminal donde lo iniciaste.
+3. Desde la carpeta del proyecto, ejecuta `.\scripts\cancelar-carga.ps1` e introduce el ID. También puedes pasarlo con `-Corrida <ID>`.
+4. Vuelve a iniciar Mercury con el comando habitual. Historial mostrará **Carga cancelada manualmente** con estado **Error**. La carga queda fuera de la cola automática.
+
+El script conserva los Excel, el registro de la última versión publicada y los cambios que ya se confirmaron. Si el aviso de publicación pendiente sigue visible, una carga posterior completada o un reintento manual puede resolverlo.
+
 ## Recuperación y alojamiento
 
 Antes de migrar, conserva `pg_dump -Fc`, un backup SQL Server, un respaldo SSAS .abf y una copia consistente de `.mercury` con los servicios detenidos. Para recuperar el estado, restaura los cuatro respaldos del mismo punto y verifica el indicador de salud. El registro operativo y los archivos de carga están en `.mercury`. La bitácora del ETL y los respaldos automáticos de PostgreSQL conservan las rutas del módulo original bajo `backend`.

@@ -70,7 +70,7 @@ export function CardEditor({widget,version,filters,onSave,onClose,inDrawer=false
   </>}
   <label>Tipo de gráfico<select value={chart} onChange={e=>setChart(e.target.value)}>{choices.map(([id,name])=><option key={id} value={id} disabled={blocked(id)}>{name}</option>)}</select></label>
   {blocked(chart)&&<p role="status">Selecciona un gráfico compatible con estas medidas y dimensiones.</p>}
-  <label>Tamaño<select value={size} onChange={e=>setSize(Number(e.target.value))}>{presets.map(([name,w])=><option key={w} value={w}>{name} · {w} columnas</option>)}{!selectedSize&&<option value={size}>Personalizado · {size} columnas</option>}</select></label>
+  <label>Tamaño<select value={size} onChange={e=>setSize(Number(e.target.value))}>{presets.map(([name,w])=><option key={w} value={w}>{name}</option>)}{!selectedSize&&<option value={size}>Personalizado</option>}</select></label>
   <div className="actions"><button onClick={renderPreview} disabled={!version||!valid||blocked(chart)||loading}>{loading?'Consultando…':'Vista previa'}</button><button className="primary" onClick={()=>onSave(draft())} disabled={!valid||blocked(chart)}>{widget?'Aplicar cambios':'Añadir al dashboard'}</button></div>
   {preview&&<div className="board-editor-preview"><ChartSnapshot result={preview.result} kind={preview.kind}/></div>}
  </aside>

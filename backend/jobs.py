@@ -46,7 +46,8 @@ def execute(row):
             return
         if cp < 1:
             patch(run_id, stage="ETL incremental")
-            result = ejecutar_etl(carpeta=DATA / "uploads" / run_id, al_progreso=progress)
+            source_run = detail.get("source_run", run_id)
+            result = ejecutar_etl(carpeta=DATA / "uploads" / source_run, al_progreso=progress)
             detail["etl_id"] = result.get("id_corrida")
             detail["etl_error_stage"] = (result.get("error") or {}).get("etapa")
             patch(run_id, detail=json.dumps(detail, default=str))

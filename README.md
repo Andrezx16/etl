@@ -31,6 +31,8 @@ En **Cargar datos**, selecciona los dos archivos.
 2. Pulsa **Confirmar carga incremental**. Mercury agrega los registros nuevos, actualiza los que cambiaron y conserva los registros existentes que no aparecen en la nueva carga.
 3. Sigue el avance en **Historial**. Cuando la carga figure como **Publicado**, sus datos estarán disponibles en el **Espacio de análisis**.
 
+Si Mercury detecta nombres de municipios o departamentos que requieren revisión, abre la carga en **Historial → Revisión geográfica**. Puedes conservar el original, elegir un nombre del catálogo DANE o restablecer la decisión. En la última carga publicada, usa **Volver a procesar estos Excel** para aplicar los cambios con los archivos guardados.
+
 Durante la carga, Mercury integra los registros en PostgreSQL, sincroniza la bodega con SQL Server y procesa el cubo de Analysis Services (SSAS). Publica la versión después de comprobar que el total de programas del cubo coincide con el de la bodega. [Detalle del proceso de carga](docs/FLUJO_ETL.md)
 
 ## Explorar y compartir resultados

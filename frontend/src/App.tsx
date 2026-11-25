@@ -7,6 +7,7 @@ import {api,date,type Health,type Option,type Run} from './client'
 import {Logo} from './Landing'
 import {Visual} from './Visual'
 import {useToast} from './Toast'
+import GeographyReview from './GeographyReview'
 import {Icon} from './Icon'
 import {SideDrawer,useMediaQuery} from './SideDrawer'
 
@@ -108,7 +109,9 @@ function History({initial}:{initial:string}){
    return <tr key={r.id}><td><button onClick={()=>setId(r.id)}>{r.id.slice(0,8)}</button></td><td>{date(r.created)}</td><td>{r.files.join(', ')||r.stage}</td><td>{stateLabel(r.state)}</td><td>{r.started&&r.ended?Math.round((Date.parse(r.ended)-Date.parse(r.started))/1000)+' s':'—'}</td><td>{count?.nuevos??'—'}</td><td>{count?.actualizados??'—'}</td><td>{count?.sin_cambios??'—'}</td><td>{r.detail.etl?Object.values(r.detail.etl.validacion??{}).concat(Object.values(r.detail.etl.staging??{})).reduce((n,x)=>n+x.rechazados,0):'—'}</td><td>{r.detail.published_version?r.detail.published_version.slice(0,8):'—'}</td></tr>
   })}</tbody></table></div>}
   <div className="actions"><button disabled={offset===0} onClick={()=>setOffset(offset-50)}>Anterior</button><button disabled={(history.data?.length??0)<50} onClick={()=>setOffset(offset+50)}>Siguiente</button></div>
- </article>{selected.data&&<Progress job={selected.data} onRetry={retry}/>}</div>
+ </article>{selected.data&&<Progress job={selected.data} onRetry={retry}/>}
+ {selected.data?.detail.etl_id&&!jobActive(selected.data)&&<GeographyReview key={id} runId={id}
+  onReprocess={runId=>{setState('');setSince('');setOffset(0);setId(runId)}}/>}</div>
 }
 function Basic({version,queryOnly,add}:{version?:string;queryOnly:boolean;add:(id:string)=>void}){
  const [id,setId]=useState('S2')

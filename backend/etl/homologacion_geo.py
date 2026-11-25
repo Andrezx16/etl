@@ -193,19 +193,23 @@ def _aplicar_decision(r, decisiones, cat):
     d = decisiones.get(_clave_decision(r))
     if not d:
         return r
+    if d["estado_revision"] == APROBADA:
+        opciones = _opciones_catalogo(r["nivel"], r["departamento_ref"], cat)
+        codigo = d.get("codigo_dane")
+        destino = (next((dato for dato in opciones.values() if dato["codigo"] == codigo), None)
+                   if codigo else opciones.get(L._clave(d.get("valor_homologado") or "")))
+        if destino is None:
+            return r
+        r.update(valor_homologado=destino["nombre"], codigo_dane=destino["codigo"])
     r["estado_revision"] = d["estado_revision"]
-    if d["estado_revision"] == APROBADA and d.get("valor_homologado"):
-        r["valor_homologado"] = d["valor_homologado"]
-        r["codigo_dane"] = _codigo_de(r, cat)
     return r
 
 
-def _codigo_de(r, cat):
-    k = L._clave(r["valor_homologado"])
-    if r["nivel"] == NIVEL_DEP:
-        return cat.deptos.get(k, {}).get("codigo")
-    kd = L._clave(r["departamento_ref"]) if r["departamento_ref"] else None
-    return cat.municipios.get(kd, {}).get(k, {}).get("codigo")
+def _opciones_catalogo(nivel, departamento_ref, cat):
+    if nivel == NIVEL_DEP:
+        return cat.deptos
+    kd = L._clave(departamento_ref) if departamento_ref else None
+    return cat.municipios.get(kd, {})
 
 
 def valor_final(r):
@@ -301,13 +305,13 @@ def leer_decisiones(cur):
     """Última decisión del usuario por caso: {(nivel, valor_original, depto_ref): {...}}."""
     cur.execute("""SELECT DISTINCT ON (nivel, valor_original, COALESCE(departamento_ref, ''))
                           nivel, valor_original, COALESCE(departamento_ref, ''),
-                          valor_homologado, estado_revision
+                          valor_homologado, codigo_dane, estado_revision
                    FROM staging.homologacion_geografica
                    WHERE estado_revision IN ('APROBADA', 'RECHAZADA')
                    ORDER BY nivel, valor_original, COALESCE(departamento_ref, ''),
                             id_homologacion DESC""")
-    return {(n, v, ref): {"valor_homologado": h, "estado_revision": e}
-            for n, v, ref, h, e in cur.fetchall()}
+    return {(n, v, ref): {"valor_homologado": h, "codigo_dane": c, "estado_revision": e}
+            for n, v, ref, h, c, e in cur.fetchall()}
 
 
 def guardar_traza(cur, id_corrida, traza):
@@ -358,7 +362,8 @@ def homologar_todo(id_corrida, validos):
 # ---------------------------------------------------------------
 # Apoyo para la pantalla de revisión (ui/homologacion.py)
 # ---------------------------------------------------------------
-def consultar_traza(id_corrida=None, clasificacion=None, estado=None, limite=5000):
+def consultar_traza(id_corrida=None, clasificacion=None, estado=None, limite=5000,
+                    solo_revision=False, offset=0):
     """Filas de la trazabilidad, con filtros opcionales. Lista de dicts."""
     from db.conexion import transaccion
     filtros, params = [], []
@@ -367,35 +372,37 @@ def consultar_traza(id_corrida=None, clasificacion=None, estado=None, limite=500
         if valor:
             filtros.append(f"{columna} = %s")
             params.append(str(valor))
+    if solo_revision:
+        filtros.append("clasificacion IN ('REVISION', 'ADVERTENCIA')")
     donde = ("WHERE " + " AND ".join(filtros)) if filtros else ""
     with transaccion() as cur:
         cur.execute(f"""SELECT id_homologacion, id_corrida, nivel, valor_original,
                                departamento_ref, valor_homologado, codigo_dane, metodo,
                                puntaje, clasificacion, estado_revision, fecha_registro
                         FROM staging.homologacion_geografica {donde}
-                        ORDER BY clasificacion, puntaje DESC, id_homologacion LIMIT %s""",
-                    params + [limite])
+                        ORDER BY clasificacion, puntaje DESC, id_homologacion LIMIT %s OFFSET %s""",
+                    params + [limite, offset])
         cols = [d[0] for d in cur.description]
         return [dict(zip(cols, f)) for f in cur.fetchall()]
 
 
-def candidatos(nivel, valor, departamento_ref=None, n=5):
-    """Mejores opciones del catálogo para un valor: [(nombre, puntaje)].
-    Sirve para que el usuario escoja otra opción distinta a la propuesta."""
+def candidatos(nivel, valor, departamento_ref=None, n=5, incluir=None):
+    """Opciones para revisión manual, comparadas por el nombre completo."""
     cat = _catalogo_en_cache()
     k = L._clave(valor)
-    if nivel == NIVEL_DEP:
-        pool = {kk: d["nombre"] for kk, d in cat.deptos.items()}
-    else:
-        kd = L._clave(departamento_ref) if departamento_ref else None
-        pool = {kk: m["nombre"] for kk, m in cat.municipios.get(kd, {}).items()}
+    pool = {clave: dato["nombre"] for clave, dato in _opciones_catalogo(nivel, departamento_ref, cat).items()}
     if not pool:
         return []
-    return [(pool[c], round(float(p), 2))
-            for c, p, _ in process.extract(k, list(pool), scorer=fuzz.WRatio, limit=n)]
+    opciones = []
+    preferida = L._clave(incluir) if incluir else None
+    if preferida in pool:
+        opciones.append((pool.pop(preferida), round(fuzz.ratio(k, preferida), 2)))
+    opciones.extend((pool[c], round(p, 2))
+                    for c, p, _ in process.extract(k, pool.keys(), scorer=fuzz.ratio, limit=n-len(opciones)))
+    return opciones
 
 
-def resolver_revision(id_homologacion, estado, valor_homologado=None):
+def resolver_revision(id_homologacion, estado, valor_homologado=None, id_corrida=None):
     """Guarda la decisión del usuario: estado APROBADA, RECHAZADA o PENDIENTE.
     Con APROBADA se puede indicar otro valor_homologado (debe existir en el DANE).
     La decisión se aplica en la siguiente ejecución del ETL."""
@@ -404,29 +411,40 @@ def resolver_revision(id_homologacion, estado, valor_homologado=None):
         raise ValueError("Estado no válido. Use APROBADA, RECHAZADA o PENDIENTE.")
     cat = _catalogo_en_cache()
     with transaccion() as cur:
-        cur.execute("""SELECT nivel, departamento_ref, valor_homologado
-                       FROM staging.homologacion_geografica WHERE id_homologacion = %s""",
-                    (id_homologacion,))
+        cur.execute("""SELECT nivel, departamento_ref, valor_homologado, valor_original
+                       FROM staging.homologacion_geografica
+                       WHERE id_homologacion = %s
+                         AND (%s::uuid IS NULL OR id_corrida = %s)
+                         AND clasificacion IN ('REVISION', 'ADVERTENCIA')""",
+                    (id_homologacion, id_corrida, id_corrida))
         fila = cur.fetchone()
         if not fila:
             raise ValueError(f"No existe el caso {id_homologacion}.")
-        nivel, ref, propuesto = fila
+        nivel, ref, propuesto, original = fila
+        clave_depto = L._clave(ref) if ref else None
+        propuesta = (resolver_departamento(original, cat) if nivel == NIVEL_DEP else
+                     resolver_municipio(original, clave_depto if clave_depto in cat.deptos else None, cat))
+        valor, codigo = propuesta["valor_homologado"], propuesta["codigo_dane"]
         if estado == APROBADA:
-            valor = valor_homologado or propuesto
+            valor = valor_homologado or valor or propuesto
             if not valor:
                 raise ValueError("No hay un valor del DANE para aprobar; elija uno.")
-            r = {"nivel": nivel, "departamento_ref": ref, "valor_homologado": valor}
-            codigo = _codigo_de(r, cat)
-            if codigo is None:
+            opciones = _opciones_catalogo(nivel, ref, cat)
+            destino = opciones.get(L._clave(valor))
+            if destino is None:
                 raise ValueError(f"'{valor}' no existe en el catálogo DANE"
                                  f"{' para ' + ref if ref else ''}.")
-            cur.execute("""UPDATE staging.homologacion_geografica
-                           SET estado_revision = %s, valor_homologado = %s, codigo_dane = %s
-                           WHERE id_homologacion = %s""",
-                        (estado, valor, codigo, id_homologacion))
-        else:
-            cur.execute("""UPDATE staging.homologacion_geografica SET estado_revision = %s
-                           WHERE id_homologacion = %s""", (estado, id_homologacion))
+            valor, codigo = destino["nombre"], destino["codigo"]
+        cur.execute("""UPDATE staging.homologacion_geografica
+                       SET estado_revision = CASE WHEN clasificacion = 'AUTOMATICO'
+                                                     AND %s = 'PENDIENTE' THEN 'NO_APLICA'
+                                                 ELSE %s END,
+                           valor_homologado = %s, codigo_dane = %s
+                       WHERE nivel = %s AND valor_original = %s
+                         AND departamento_ref IS NOT DISTINCT FROM %s
+                         AND (clasificacion IN ('REVISION', 'ADVERTENCIA')
+                              OR estado_revision IN ('APROBADA', 'RECHAZADA'))""",
+                    (estado, estado, valor, codigo, nivel, original, ref))
 
 
 # ---------------------------------------------------------------

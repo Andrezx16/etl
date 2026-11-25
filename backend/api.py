@@ -11,6 +11,8 @@ from urllib.parse import urlsplit
 from uuid import UUID, uuid4
 
 from pathlib import PurePosixPath
+from typing import Literal
+import psycopg2
 from fastapi import FastAPI, File, Form, HTTPException, Query as Param, Request, UploadFile
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from openpyxl import Workbook
@@ -256,6 +258,80 @@ def rejections(id: UUID):
         raise HTTPException(503, "No fue posible consultar los rechazos en PostgreSQL.")
     return Response(stream.getvalue().encode("utf-8-sig"), media_type="text/csv",
                     headers={"Content-Disposition": 'attachment; filename="rechazos-mercury.csv"'})
+
+
+@app.get("/api/runs/{id}/geography")
+def geography(id: UUID, offset: int = Param(0, ge=0)):
+    from etl.homologacion_geo import candidatos, consultar_traza, ErrorCatalogoDane
+
+    job = get_run(id)
+    etl_id = job["detail"].get("etl_id")
+    if not etl_id:
+        raise HTTPException(409, "Todavía no hay una revisión geográfica para esta carga.")
+    try:
+        rows = consultar_traza(etl_id, limite=11, solo_revision=True, offset=offset)
+        for row in rows[:10]:
+            row["opciones"] = [
+                {"nombre": nombre, "puntaje": puntaje}
+                for nombre, puntaje in candidatos(
+                    row["nivel"], row["valor_original"], row["departamento_ref"],
+                    incluir=row["valor_homologado"],
+                )
+            ]
+    except psycopg2.Error:
+        raise HTTPException(503, "No fue posible consultar la revisión geográfica en PostgreSQL.")
+    except ErrorCatalogoDane:
+        raise HTTPException(503, "No se pudo leer el catálogo DANE.")
+    with db() as conn:
+        layers = versions(conn)
+    can_reprocess = job["state"] == "COMPLETADA" and layers.get("cube") == layers.get("dw") == str(id)
+    return {"rows": rows[:10], "more": len(rows) > 10, "canReprocess": can_reprocess}
+
+
+class GeographyDecision(BaseModel):
+    estado: Literal["APROBADA", "RECHAZADA", "PENDIENTE"]
+    valor: str | None = Field(default=None, max_length=200)
+
+
+@app.put("/api/runs/{id}/geography/{case_id}")
+def decide_geography(id: UUID, case_id: int, body: GeographyDecision):
+    from etl.homologacion_geo import ErrorCatalogoDane, resolver_revision
+
+    job = get_run(id)
+    if not (etl_id := job["detail"].get("etl_id")):
+        raise HTTPException(409, "Todavía no hay una revisión geográfica para esta carga.")
+    try:
+        with db(True) as conn:
+            if conn.execute("SELECT 1 FROM run WHERE state IN ('EN_COLA','EN_PROCESO')").fetchone():
+                raise HTTPException(409, "Espera a que termine la carga en curso antes de guardar la decisión.")
+            resolver_revision(case_id, body.estado, body.valor, id_corrida=etl_id)
+    except psycopg2.Error:
+        raise HTTPException(503, "No fue posible guardar la decisión en PostgreSQL.")
+    except ErrorCatalogoDane:
+        raise HTTPException(503, "No se pudo leer el catálogo DANE.")
+    return {"estado": body.estado}
+
+
+@app.post("/api/runs/{id}/geography/reprocess", status_code=202)
+def reprocess_geography(id: UUID):
+    job = get_run(id)
+    source = job["detail"].get("source_run", str(id))
+    if not job["detail"].get("etl_id") or not all(
+        (DATA / "uploads" / source / name).is_file() for name in FILES
+    ):
+        raise HTTPException(409, "Los archivos de esta carga ya no están disponibles.")
+    run_id = str(uuid4())
+    with db(True) as conn:
+        layers = versions(conn)
+        if job["state"] != "COMPLETADA" or layers.get("cube") != str(id) or layers.get("dw") != str(id):
+            raise HTTPException(409, "Solo se pueden reprocesar los Excel de la última carga publicada.")
+        try:
+            conn.execute("""INSERT INTO run(id,created,state,stage,files,detail)
+                            VALUES (?,?,'EN_COLA','Reprocesar Excel',?,?)""",
+                         (run_id, now(), json.dumps(job["files"]), json.dumps({"source_run": source})))
+        except sqlite3.IntegrityError:
+            raise HTTPException(409, "Ya hay una corrida en curso.")
+    return {"id": run_id, "state": "EN_COLA"}
 
 @app.post("/api/setup/initialize", status_code=202)
 def initialize():
